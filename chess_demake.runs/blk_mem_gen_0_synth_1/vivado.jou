@@ -2,11 +2,11 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Thu Dec 19 10:59:22 2024
-# Process ID: 4596
-# Current directory: C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/blk_mem_gen_0_synth_1
+# Start of session at: Fri Dec 20 14:58:24 2024
+# Process ID: 14144
+# Current directory: C:/Users/04071/OneDrive/文件/GitHub/ChessDemake/chess_demake.runs/blk_mem_gen_0_synth_1
 # Command line: vivado.exe -log blk_mem_gen_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source blk_mem_gen_0.tcl
-# Log file: C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/blk_mem_gen_0_synth_1/blk_mem_gen_0.vds
-# Journal file: C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/blk_mem_gen_0_synth_1\vivado.jou
+# Log file: C:/Users/04071/OneDrive/文件/GitHub/ChessDemake/chess_demake.runs/blk_mem_gen_0_synth_1/blk_mem_gen_0.vds
+# Journal file: C:/Users/04071/OneDrive/文件/GitHub/ChessDemake/chess_demake.runs/blk_mem_gen_0_synth_1\vivado.jou
 #-----------------------------------------------------------
 source blk_mem_gen_0.tcl -notrace

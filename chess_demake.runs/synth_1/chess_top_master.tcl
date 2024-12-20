@@ -19,42 +19,41 @@ proc create_report { reportName command } {
 }
 set_param chipscope.maxJobs 4
 set_param xicom.use_bs_reader 1
-set_msg_config -id {Common 17-41} -limit 10000000
 create_project -in_memory -part xc7a35tcpg236-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
-set_property webtalk.parent_dir C:/Users/st103/vivadoProject/chess_demake/chess_demake.cache/wt [current_project]
-set_property parent.project_path C:/Users/st103/vivadoProject/chess_demake/chess_demake.xpr [current_project]
+set_property webtalk.parent_dir C:/GitHub/ChessDemake/chess_demake.cache/wt [current_project]
+set_property parent.project_path C:/GitHub/ChessDemake/chess_demake.xpr [current_project]
 set_property XPM_LIBRARIES XPM_MEMORY [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property ip_repo_paths {{c:/Users/st103/OneDrive/×ÀÃæ/NTHU/Hardware Design/Final Project/ip/Keyboard-Controller}} [current_project]
+set_property ip_repo_paths {{c:/OneDrive/®à­±/NTHU/Hardware Design/Final Project/ip/Keyboard-Controller}} [current_project]
 update_ip_catalog
-set_property ip_output_repo c:/Users/st103/vivadoProject/chess_demake/chess_demake.cache/ip [current_project]
+set_property ip_output_repo c:/GitHub/ChessDemake/chess_demake.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
-add_files c:/Users/st103/vivadoProject/chess_demake/chess_demake.coe/asset.coe
+add_files C:/GitHub/ChessDemake/chess_demake.coe/asset.coe
 read_verilog -library xil_defaultlib {
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v}
-  C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/chess_top.v
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/debounce.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/mem_addr_gen.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/note_gen.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/one_pulse.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/player_control.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/speaker_control.v}
-  {C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/vga.v}
-  C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v}
+  C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/chess_top.v
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/debounce.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/mem_addr_gen.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/note_gen.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/one_pulse.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/player_control.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/speaker_control.v}
+  {C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/vga.v}
+  C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/cursor_controller.v
 }
-read_ip -quiet c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0.xci
-set_property used_in_implementation false [get_files -all c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0_ooc.xdc]
+read_ip -quiet C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0.xci
+set_property used_in_implementation false [get_files -all c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0_ooc.xdc]
 
-read_ip -quiet c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
+read_ip -quiet C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
 
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -64,8 +63,8 @@ read_ip -quiet c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sourc
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc {{C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc}}
-set_property used_in_implementation false [get_files {{C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc}}]
+read_xdc {{C:/GitHub/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc}}
+set_property used_in_implementation false [get_files {{C:/GitHub/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc}}]
 
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]

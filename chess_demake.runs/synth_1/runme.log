@@ -10,87 +10,78 @@
 
 source chess_top_master.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
-INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/st103/OneDrive/×ÀÃæ/NTHU/Hardware Design/Final Project/ip/Keyboard-Controller'.
-INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Xilinx/Vivado/2019.2/data/ip'.
+WARNING: [IP_Flow 19-2248] Failed to load user IP repository 'c:/OneDrive/®à­±/NTHU/Hardware Design/Final Project/ip/Keyboard-Controller'; Can't find the specified path.
+If this directory should no longer be in your list of user repositories, go to the IP Settings dialog and remove it.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.2/data/ip'.
 Command: synth_design -top chess_top_master -part xc7a35tcpg236-1
 Starting synth_design
+INFO: [IP_Flow 19-2162] IP 'KeyboardCtrl_0' is locked:
+* IP definition 'KeyboardCtrl (1.0)' for IP 'KeyboardCtrl_0' (customized with software release 2019.2) was not found in the IP Catalog.
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Device 21-403] Loading part xc7a35tcpg236-1
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 31192 
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:18]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:19]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:20]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:21]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:22]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:23]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:24]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:26]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:27]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:28]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:29]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:31]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:32]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:33]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:34]
-WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:35]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:191]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:192]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:193]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:194]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:229]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:231]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:232]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:233]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:234]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:235]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:236]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:237]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:238]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:239]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:240]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:241]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:242]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:243]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:244]
-WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:245]
+INFO: Helper process launched with PID 15496 
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:18]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:19]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:20]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:21]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:22]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:23]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:24]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:26]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:27]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:28]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:29]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:31]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:32]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:33]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:34]
+WARNING: [Synth 8-2507] parameter declaration becomes local in KeyboardCtrl with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardCtrl.v:35]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:191]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:192]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:193]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:194]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:229]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:231]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:232]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:233]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:234]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:235]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:236]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:237]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:238]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:239]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:240]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:241]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:242]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:243]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:244]
+WARNING: [Synth 8-2507] parameter declaration becomes local in Ps2Interface with formal parameter declaration list [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/Ps2Interface.v:245]
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:00 ; elapsed = 00:00:02 . Memory (MB): peak = 787.238 ; gain = 241.910
+Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 786.062 ; gain = 240.719
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'chess_top_master' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/chess_top.v:3]
+INFO: [Synth 8-6157] synthesizing module 'chess_top_master' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/chess_top.v:3]
 	Parameter INIT bound to: 2'b00 
 	Parameter GAME bound to: 2'b01 
 	Parameter PAUSE bound to: 2'b10 
 	Parameter FINISH bound to: 2'b11 
 	Parameter ENTER_CODE bound to: 9'b001011010 
 	Parameter KEY_CODES bound to: 72'b000011101000011100000011011000100011101110101101101011101110010101110100 
-INFO: [Synth 8-6157] synthesizing module 'clock_divider' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'clock_divider' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
 	Parameter n bound to: 2 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'clock_divider' (1#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
-INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized0' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'clock_divider' (1#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized0' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
 	Parameter n bound to: 15 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized0' (1#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
-INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized1' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized0' (1#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized1' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
 	Parameter n bound to: 22 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized1' (1#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
-INFO: [Synth 8-6157] synthesizing module 'debounce' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/debounce.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'debounce' (2#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/debounce.v:1]
-INFO: [Synth 8-6157] synthesizing module 'one_pulse' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/one_pulse.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'one_pulse' (3#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/one_pulse.v:1]
-INFO: [Synth 8-6157] synthesizing module 'KeyboardDecoder' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v:1]
-	Parameter INIT bound to: 2'b00 
-	Parameter WAIT_FOR_SIGNAL bound to: 2'b01 
-	Parameter GET_SIGNAL_DOWN bound to: 2'b10 
-	Parameter WAIT_RELEASE bound to: 2'b11 
-	Parameter IS_INIT bound to: 8'b10101010 
-	Parameter IS_EXTEND bound to: 8'b11100000 
-	Parameter IS_BREAK bound to: 8'b11110000 
-INFO: [Synth 8-6157] synthesizing module 'KeyboardCtrl_0' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/synth_1/.Xil/Vivado-35092-BensonLaptop/realtime/KeyboardCtrl_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'KeyboardCtrl_0' (4#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/synth_1/.Xil/Vivado-35092-BensonLaptop/realtime/KeyboardCtrl_0_stub.v:6]
-INFO: [Synth 8-226] default block is never used [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v:64]
-INFO: [Synth 8-6155] done synthesizing module 'KeyboardDecoder' (5#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v:1]
-INFO: [Synth 8-6157] synthesizing module 'vga_controller' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/vga.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized1' (1#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'debounce' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/debounce.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'debounce' (2#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/debounce.v:1]
+INFO: [Synth 8-6157] synthesizing module 'one_pulse' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/one_pulse.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'one_pulse' (3#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/one_pulse.v:1]
+INFO: [Synth 8-6157] synthesizing module 'vga_controller' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/vga.v:6]
 	Parameter HD bound to: 640 - type: integer 
 	Parameter HF bound to: 16 - type: integer 
 	Parameter HS bound to: 96 - type: integer 
@@ -103,36 +94,49 @@ INFO: [Synth 8-6157] synthesizing module 'vga_controller' [C:/Users/st103/vivado
 	Parameter VT bound to: 525 - type: integer 
 	Parameter hsync_default bound to: 1'b1 
 	Parameter vsync_default bound to: 1'b1 
-INFO: [Synth 8-6155] done synthesizing module 'vga_controller' (6#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/vga.v:6]
-INFO: [Synth 8-6157] synthesizing module 'mem_addr_gen' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/mem_addr_gen.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'vga_controller' (4#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/vga.v:6]
+INFO: [Synth 8-6157] synthesizing module 'mem_addr_gen' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/mem_addr_gen.v:6]
 	Parameter INIT bound to: 2'b00 
 	Parameter GAME bound to: 2'b01 
 	Parameter PAUSE bound to: 2'b10 
 	Parameter FINISH bound to: 2'b11 
-INFO: [Synth 8-6155] done synthesizing module 'mem_addr_gen' (7#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/imports/Imported Module/mem_addr_gen.v:6]
-INFO: [Synth 8-6157] synthesizing module 'blk_mem_gen_0' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/synth_1/.Xil/Vivado-35092-BensonLaptop/realtime/blk_mem_gen_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'blk_mem_gen_0' (8#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/synth_1/.Xil/Vivado-35092-BensonLaptop/realtime/blk_mem_gen_0_stub.v:6]
-INFO: [Synth 8-6157] synthesizing module 'cursor_controller' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'mem_addr_gen' (5#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/mem_addr_gen.v:6]
+INFO: [Synth 8-6157] synthesizing module 'blk_mem_gen_0' [C:/GitHub/ChessDemake/chess_demake.runs/synth_1/.Xil/Vivado-6548-MSI/realtime/blk_mem_gen_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'blk_mem_gen_0' (6#1) [C:/GitHub/ChessDemake/chess_demake.runs/synth_1/.Xil/Vivado-6548-MSI/realtime/blk_mem_gen_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'cursor_controller' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/cursor_controller.v:3]
 	Parameter INIT bound to: 2'b00 
 	Parameter GAME bound to: 2'b01 
 	Parameter PAUSE bound to: 2'b10 
 	Parameter FINISH bound to: 2'b11 
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v:24]
-WARNING: [Synth 8-3848] Net is_chess_move in module/entity cursor_controller does not have driver. [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v:15]
-INFO: [Synth 8-6155] done synthesizing module 'cursor_controller' (9#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v:3]
-INFO: [Synth 8-226] default block is never used [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/chess_top.v:146]
-WARNING: [Synth 8-3848] Net data in module/entity chess_top_master does not have driver. [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/chess_top.v:58]
-INFO: [Synth 8-6155] done synthesizing module 'chess_top_master' (10#1) [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/chess_top.v:3]
-WARNING: [Synth 8-3331] design cursor_controller has unconnected port is_chess_move
-WARNING: [Synth 8-3331] design cursor_controller has unconnected port PS2_CLK
-WARNING: [Synth 8-3331] design cursor_controller has unconnected port PS2_DATA
-WARNING: [Synth 8-3331] design cursor_controller has unconnected port rst
+	Parameter ENTER_CODE bound to: 9'b001011010 
+	Parameter KEY_CODES bound to: 72'b000011101000011100000011011000100011001110011001101001001110010001111010 
+	Parameter HOLD bound to: 1'b0 
+	Parameter UNHOLD bound to: 1'b1 
+INFO: [Synth 8-6157] synthesizing module 'KeyboardDecoder' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v:1]
+	Parameter INIT bound to: 2'b00 
+	Parameter WAIT_FOR_SIGNAL bound to: 2'b01 
+	Parameter GET_SIGNAL_DOWN bound to: 2'b10 
+	Parameter WAIT_RELEASE bound to: 2'b11 
+	Parameter IS_INIT bound to: 8'b10101010 
+	Parameter IS_EXTEND bound to: 8'b11100000 
+	Parameter IS_BREAK bound to: 8'b11110000 
+INFO: [Synth 8-6157] synthesizing module 'KeyboardCtrl_0' [C:/GitHub/ChessDemake/chess_demake.runs/synth_1/.Xil/Vivado-6548-MSI/realtime/KeyboardCtrl_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'KeyboardCtrl_0' (7#1) [C:/GitHub/ChessDemake/chess_demake.runs/synth_1/.Xil/Vivado-6548-MSI/realtime/KeyboardCtrl_0_stub.v:6]
+INFO: [Synth 8-226] default block is never used [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v:64]
+INFO: [Synth 8-6155] done synthesizing module 'KeyboardDecoder' (8#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/imports/Imported Module/KeyboardDecoder.v:1]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/cursor_controller.v:62]
+INFO: [Synth 8-6155] done synthesizing module 'cursor_controller' (9#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/cursor_controller.v:3]
+WARNING: [Synth 8-689] width (1) of port connection 'hold_position' does not match port width (6) of module 'cursor_controller' [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/chess_top.v:124]
+INFO: [Synth 8-226] default block is never used [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/chess_top.v:141]
+WARNING: [Synth 8-3848] Net data in module/entity chess_top_master does not have driver. [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/chess_top.v:59]
+INFO: [Synth 8-6155] done synthesizing module 'chess_top_master' (10#1) [C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/new/chess_top.v:3]
+WARNING: [Synth 8-3331] design cursor_controller has unconnected port test
 WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port clk
 WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port rst
 WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port state[1]
 WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port state[0]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 836.316 ; gain = 290.988
+Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 837.766 ; gain = 292.422
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -145,56 +149,54 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:01 ; elapsed = 00:00:04 . Memory (MB): peak = 836.316 ; gain = 290.988
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 837.766 ; gain = 292.422
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:01 ; elapsed = 00:00:04 . Memory (MB): peak = 836.316 ; gain = 290.988
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 837.766 ; gain = 292.422
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.021 . Memory (MB): peak = 836.316 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.019 . Memory (MB): peak = 837.766 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
-Parsing XDC File [c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'blk_mem_gen_0_inst'
-Finished Parsing XDC File [c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'blk_mem_gen_0_inst'
-Parsing XDC File [c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'KD/inst'
-Finished Parsing XDC File [c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'KD/inst'
-Parsing XDC File [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc]
-Finished Parsing XDC File [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/chess_top_master_propImpl.xdc].
+Parsing XDC File [c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'blk_mem_gen_0_inst'
+Finished Parsing XDC File [c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'blk_mem_gen_0_inst'
+Parsing XDC File [c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'cc/kd1/inst'
+Finished Parsing XDC File [c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'cc/kd1/inst'
+Parsing XDC File [C:/GitHub/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc]
+Finished Parsing XDC File [C:/GitHub/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/GitHub/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/chess_top_master_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/chess_top_master_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 941.586 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 944.789 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 941.586 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 944.789 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 941.586 ; gain = 396.258
+Finished Constraint Validation : Time (s): cpu = 00:00:03 ; elapsed = 00:00:07 . Memory (MB): peak = 944.789 ; gain = 399.445
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35tcpg236-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 941.586 ; gain = 396.258
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:03 ; elapsed = 00:00:07 . Memory (MB): peak = 944.789 ; gain = 399.445
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
-Applied set_property IO_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 1).
-Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 2).
-Applied set_property IO_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 3).
-Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 4).
+Applied set_property IO_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 1).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 2).
+Applied set_property IO_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 3).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 4).
 Applied set_property DONT_TOUCH = true for blk_mem_gen_0_inst. (constraint file  auto generated constraint, line ).
-Applied set_property DONT_TOUCH = true for KD/inst. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for cc/kd1/inst. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 941.586 ; gain = 396.258
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:03 ; elapsed = 00:00:07 . Memory (MB): peak = 944.789 ; gain = 399.445
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'KeyboardDecoder'
-INFO: [Synth 8-4471] merging register 'position_reg[5:0]' into 'pre_position_reg[5:0]' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v:29]
-INFO: [Synth 8-4471] merging register 'info_mod_reg[5:0]' into 'pre_position_reg[5:0]' [C:/Users/st103/vivadoProject/chess_demake/chess_demake.srcs/sources_1/new/cursor_controller.v:31]
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
@@ -205,7 +207,7 @@ INFO: [Synth 8-4471] merging register 'info_mod_reg[5:0]' into 'pre_position_reg
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'KeyboardDecoder'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:02 ; elapsed = 00:00:10 . Memory (MB): peak = 941.586 ; gain = 396.258
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:07 . Memory (MB): peak = 944.789 ; gain = 399.445
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -220,26 +222,33 @@ Detailed RTL Component Info :
 +---Adders : 
 	   2 Input     32 Bit       Adders := 1     
 	   2 Input     10 Bit       Adders := 3     
+	   2 Input      7 Bit       Adders := 1     
 	   2 Input      6 Bit       Adders := 1     
 	   2 Input      2 Bit       Adders := 1     
 +---Registers : 
 	              512 Bit    Registers := 1     
 	               10 Bit    Registers := 3     
 	                7 Bit    Registers := 2     
-	                6 Bit    Registers := 3     
+	                6 Bit    Registers := 5     
+	                4 Bit    Registers := 1     
 	                2 Bit    Registers := 2     
-	                1 Bit    Registers := 14    
+	                1 Bit    Registers := 18    
 +---Muxes : 
 	   2 Input    512 Bit        Muxes := 1     
 	   2 Input     16 Bit        Muxes := 1     
-	   4 Input     10 Bit        Muxes := 1     
 	   2 Input     10 Bit        Muxes := 2     
+	   4 Input     10 Bit        Muxes := 1     
 	   2 Input      6 Bit        Muxes := 4     
+	   2 Input      5 Bit        Muxes := 2     
+	   2 Input      4 Bit        Muxes := 1     
+	   5 Input      4 Bit        Muxes := 1     
 	   4 Input      2 Bit        Muxes := 1     
 	   2 Input      2 Bit        Muxes := 5     
 	   6 Input      2 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 19    
+	   2 Input      1 Bit        Muxes := 41    
 	   4 Input      1 Bit        Muxes := 7     
+	   6 Input      1 Bit        Muxes := 1     
+	   5 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -275,19 +284,6 @@ Module one_pulse
 Detailed RTL Component Info : 
 +---Registers : 
 	                1 Bit    Registers := 2     
-Module KeyboardDecoder 
-Detailed RTL Component Info : 
-+---Registers : 
-	              512 Bit    Registers := 1     
-	               10 Bit    Registers := 1     
-	                1 Bit    Registers := 4     
-+---Muxes : 
-	   2 Input    512 Bit        Muxes := 1     
-	   4 Input     10 Bit        Muxes := 1     
-	   4 Input      2 Bit        Muxes := 1     
-	   2 Input      2 Bit        Muxes := 3     
-	   2 Input      1 Bit        Muxes := 8     
-	   4 Input      1 Bit        Muxes := 7     
 Module vga_controller 
 Detailed RTL Component Info : 
 +---Adders : 
@@ -304,15 +300,35 @@ Detailed RTL Component Info :
 	   2 Input     10 Bit       Adders := 1     
 +---Muxes : 
 	   2 Input     16 Bit        Muxes := 1     
+Module KeyboardDecoder 
+Detailed RTL Component Info : 
++---Registers : 
+	              512 Bit    Registers := 1     
+	               10 Bit    Registers := 1     
+	                1 Bit    Registers := 4     
++---Muxes : 
+	   2 Input    512 Bit        Muxes := 1     
+	   4 Input     10 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 3     
+	   2 Input      1 Bit        Muxes := 8     
+	   4 Input      1 Bit        Muxes := 7     
 Module cursor_controller 
 Detailed RTL Component Info : 
 +---Adders : 
+	   2 Input      7 Bit       Adders := 1     
 	   2 Input      6 Bit       Adders := 1     
 +---Registers : 
-	                6 Bit    Registers := 3     
-	                1 Bit    Registers := 1     
+	                6 Bit    Registers := 5     
+	                4 Bit    Registers := 1     
+	                1 Bit    Registers := 5     
 +---Muxes : 
-	   2 Input      1 Bit        Muxes := 3     
+	   2 Input      5 Bit        Muxes := 2     
+	   2 Input      4 Bit        Muxes := 1     
+	   5 Input      4 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 25    
+	   6 Input      1 Bit        Muxes := 1     
+	   5 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
@@ -329,16 +345,14 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
-INFO: [Synth 8-3886] merging instance 'cc/pre_cursor_reg_rep[0]' (FDRE) to 'cc/pre_cursor_reg[0]'
-INFO: [Synth 8-3886] merging instance 'cc/pre_cursor_reg_rep[1]' (FDRE) to 'cc/pre_cursor_reg[1]'
-INFO: [Synth 8-3886] merging instance 'cc/pre_cursor_reg_rep[2]' (FDRE) to 'cc/pre_cursor_reg[2]'
-INFO: [Synth 8-3886] merging instance 'cc/pre_cursor_reg_rep[3]' (FDRE) to 'cc/pre_cursor_reg[3]'
-INFO: [Synth 8-3886] merging instance 'cc/pre_cursor_reg_rep[4]' (FDRE) to 'cc/pre_cursor_reg[4]'
-INFO: [Synth 8-3886] merging instance 'cc/pre_cursor_reg_rep[5]' (FDRE) to 'cc/pre_cursor_reg[5]'
-WARNING: [Synth 8-3332] Sequential element (KD/FSM_sequential_state_reg[1]) is unused and will be removed from module chess_top_master.
-WARNING: [Synth 8-3332] Sequential element (KD/FSM_sequential_state_reg[0]) is unused and will be removed from module chess_top_master.
+WARNING: [Synth 8-3331] design cursor_controller has unconnected port test
+WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port clk
+WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port rst
+WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port v_cnt[0]
+WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port state[1]
+WARNING: [Synth 8-3331] design mem_addr_gen has unconnected port state[0]
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:03 ; elapsed = 00:00:13 . Memory (MB): peak = 941.586 ; gain = 396.258
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:06 ; elapsed = 00:00:14 . Memory (MB): peak = 944.789 ; gain = 399.445
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -365,13 +379,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:04 ; elapsed = 00:00:19 . Memory (MB): peak = 941.586 ; gain = 396.258
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:09 ; elapsed = 00:00:18 . Memory (MB): peak = 944.789 ; gain = 399.445
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:04 ; elapsed = 00:00:19 . Memory (MB): peak = 945.836 ; gain = 400.508
+Finished Timing Optimization : Time (s): cpu = 00:00:11 ; elapsed = 00:00:22 . Memory (MB): peak = 1059.668 ; gain = 514.324
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -397,7 +411,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:04 ; elapsed = 00:00:20 . Memory (MB): peak = 961.559 ; gain = 416.230
+Finished Technology Mapping : Time (s): cpu = 00:00:11 ; elapsed = 00:00:23 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -433,13 +447,13 @@ CRITICAL WARNING: [Synth 8-4442] BlackBox module blk_mem_gen_0_inst has unconnec
 CRITICAL WARNING: [Synth 8-4442] BlackBox module blk_mem_gen_0_inst has unconnected pin dina[1]
 CRITICAL WARNING: [Synth 8-4442] BlackBox module blk_mem_gen_0_inst has unconnected pin dina[0]
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:05 ; elapsed = 00:00:22 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished IO Insertion : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:05 ; elapsed = 00:00:22 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -458,25 +472,25 @@ Report Check Netlist:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:05 ; elapsed = 00:00:23 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:05 ; elapsed = 00:00:23 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:23 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:05 ; elapsed = 00:00:23 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -497,61 +511,61 @@ Report Cell Usage:
 |1     |KeyboardCtrl_0 |     1|
 |2     |blk_mem_gen_0  |     1|
 |3     |BUFG           |     1|
-|4     |CARRY4         |    62|
-|5     |LUT1           |    14|
-|6     |LUT2           |    97|
-|7     |LUT3           |    32|
-|8     |LUT4           |    56|
-|9     |LUT5           |    91|
-|10    |LUT6           |   110|
-|11    |RAM64M         |     6|
-|12    |FDCE           |     2|
-|13    |FDRE           |    65|
-|14    |FDSE           |     6|
-|15    |IBUF           |     5|
-|16    |OBUF           |    16|
+|4     |CARRY4         |    64|
+|5     |LUT1           |    29|
+|6     |LUT2           |   119|
+|7     |LUT3           |    42|
+|8     |LUT4           |   581|
+|9     |LUT5           |   126|
+|10    |LUT6           |   269|
+|11    |MUXF7          |    76|
+|12    |MUXF8          |    36|
+|13    |RAM64M         |     6|
+|14    |FDCE           |   536|
+|15    |FDRE           |    63|
+|16    |FDSE           |     6|
+|17    |IBUF           |     4|
+|18    |OBUF           |    20|
 +------+---------------+------+
 
 Report Instance Areas: 
-+------+--------------------+------------------------------+------+
-|      |Instance            |Module                        |Cells |
-+------+--------------------+------------------------------+------+
-|1     |top                 |                              |   587|
-|2     |  KD                |KeyboardDecoder               |    12|
-|3     |  cc                |cursor_controller             |    35|
-|4     |  db                |debounce                      |    10|
-|5     |  db1               |debounce_0                    |    10|
-|6     |  m15               |clock_divider__parameterized0 |    20|
-|7     |  m2                |clock_divider                 |     4|
-|8     |  mem_addr_gen_inst |mem_addr_gen                  |    91|
-|9     |  op                |one_pulse                     |     5|
-|10    |  op1               |one_pulse_1                   |     2|
-|11    |  vga_inst          |vga_controller                |   332|
-+------+--------------------+------------------------------+------+
++------+-----------+------------------------------+------+
+|      |Instance   |Module                        |Cells |
++------+-----------+------------------------------+------+
+|1     |top        |                              |  2002|
+|2     |  cc       |cursor_controller             |  1470|
+|3     |    kd1    |KeyboardDecoder               |  1437|
+|4     |      op   |one_pulse_0                   |     4|
+|5     |  db       |debounce                      |    10|
+|6     |  m15      |clock_divider__parameterized0 |    20|
+|7     |  m2       |clock_divider                 |     4|
+|8     |  op       |one_pulse                     |     5|
+|9     |  vga_inst |vga_controller                |   350|
++------+-----------+------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:05 ; elapsed = 00:00:23 . Memory (MB): peak = 967.336 ; gain = 422.008
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 12 critical warnings and 2 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:04 ; elapsed = 00:00:20 . Memory (MB): peak = 967.336 ; gain = 316.738
-Synthesis Optimization Complete : Time (s): cpu = 00:00:05 ; elapsed = 00:00:23 . Memory (MB): peak = 967.336 ; gain = 422.008
+Synthesis finished with 0 errors, 12 critical warnings and 6 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:10 ; elapsed = 00:00:24 . Memory (MB): peak = 1060.727 ; gain = 408.359
+Synthesis Optimization Complete : Time (s): cpu = 00:00:12 ; elapsed = 00:00:25 . Memory (MB): peak = 1060.727 ; gain = 515.383
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.007 . Memory (MB): peak = 967.336 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 68 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1072.570 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 182 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 969.527 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1072.570 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 6 instances were transformed.
   RAM64M => RAM64M (RAMD64E(x4)): 6 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-52 Infos, 48 Warnings, 12 Critical Warnings and 0 Errors encountered.
+44 Infos, 50 Warnings, 12 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:06 ; elapsed = 00:00:27 . Memory (MB): peak = 969.527 ; gain = 671.680
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 969.527 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:14 ; elapsed = 00:00:29 . Memory (MB): peak = 1072.570 ; gain = 774.062
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1072.570 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
-INFO: [Common 17-1381] The checkpoint 'C:/Users/st103/vivadoProject/chess_demake/chess_demake.runs/synth_1/chess_top_master.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'C:/GitHub/ChessDemake/chess_demake.runs/synth_1/chess_top_master.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file chess_top_master_utilization_synth.rpt -pb chess_top_master_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Thu Dec 19 21:51:16 2024...
+INFO: [Common 17-206] Exiting Vivado at Fri Dec 20 16:22:55 2024...

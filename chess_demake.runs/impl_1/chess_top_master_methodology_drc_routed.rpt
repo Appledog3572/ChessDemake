@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Thu Dec 19 21:52:05 2024
-| Host         : BensonLaptop running 64-bit major release  (build 9200)
+| Date         : Fri Dec 20 16:23:45 2024
+| Host         : MSI running 64-bit major release  (build 9200)
 | Command      : report_methodology -file chess_top_master_methodology_drc_routed.rpt -pb chess_top_master_methodology_drc_routed.pb -rpx chess_top_master_methodology_drc_routed.rpx
 | Design       : chess_top_master
 | Device       : xc7a35tcpg236-1
@@ -23,12 +23,12 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 72
+             Violations found: 69
 +-----------+------------------+-------------------------------+------------+
 | Rule      | Severity         | Description                   | Violations |
 +-----------+------------------+-------------------------------+------------+
-| TIMING-17 | Critical Warning | Non-clocked sequential cell   | 66         |
-| TIMING-18 | Warning          | Missing input or output delay | 6          |
+| TIMING-17 | Critical Warning | Non-clocked sequential cell   | 59         |
+| TIMING-18 | Warning          | Missing input or output delay | 10         |
 +-----------+------------------+-------------------------------+------------+
 
 2. REPORT DETAILS
@@ -220,145 +220,110 @@ Related violations: <none>
 
 TIMING-17#38 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[0]/C is not reached by a timing clock
+The clock pin vga_inst/hsync_i_reg/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#39 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[1]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[0]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#40 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[2]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[1]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#41 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[3]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[2]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#42 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[4]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[3]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#43 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[5]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[4]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#44 Critical Warning
 Non-clocked sequential cell  
-The clock pin db1/shift_reg_reg[6]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[5]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#45 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/hsync_i_reg/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[6]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#46 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[0]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[7]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#47 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[1]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[8]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#48 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[2]/C is not reached by a timing clock
+The clock pin vga_inst/line_cnt_reg[9]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#49 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[3]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[0]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#50 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[4]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[1]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#51 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[5]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[2]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#52 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[6]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[3]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#53 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[7]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[4]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#54 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[8]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[5]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#55 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/line_cnt_reg[9]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[6]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#56 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[0]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[7]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#57 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[1]/C is not reached by a timing clock
+The clock pin vga_inst/pixel_cnt_reg[8]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#58 Critical Warning
 Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[2]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#59 Critical Warning
-Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[3]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#60 Critical Warning
-Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[4]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#61 Critical Warning
-Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[5]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#62 Critical Warning
-Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[6]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#63 Critical Warning
-Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[7]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#64 Critical Warning
-Non-clocked sequential cell  
-The clock pin vga_inst/pixel_cnt_reg[8]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#65 Critical Warning
-Non-clocked sequential cell  
 The clock pin vga_inst/pixel_cnt_reg[9]/C is not reached by a timing clock
 Related violations: <none>
 
-TIMING-17#66 Critical Warning
+TIMING-17#59 Critical Warning
 Non-clocked sequential cell  
 The clock pin vga_inst/vsync_i_reg/C is not reached by a timing clock
 Related violations: <none>
@@ -385,10 +350,30 @@ Related violations: <none>
 
 TIMING-18#5 Warning
 Missing input or output delay  
-An output delay is missing on debug[0] relative to clock(s) sys_clk_pin
+An output delay is missing on LED[0] relative to clock(s) sys_clk_pin
 Related violations: <none>
 
 TIMING-18#6 Warning
+Missing input or output delay  
+An output delay is missing on LED[1] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An output delay is missing on LED[2] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An output delay is missing on LED[3] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An output delay is missing on debug[0] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#10 Warning
 Missing input or output delay  
 An output delay is missing on debug[1] relative to clock(s) sys_clk_pin
 Related violations: <none>
