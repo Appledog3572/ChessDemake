@@ -62,7 +62,8 @@ module chess_top_master(
     reg [5:0] timer;
     reg player_turn;
     reg [1:0] has_king;
-    reg [5:0] board [0:63]={
+    reg [5:0] board [0:63];
+    reg [5:0] board_read_only [0:63] = {
         26, 08, 18, 32, 42, 16, 10, 24,
         00, 02, 00, 02, 00, 02, 00, 02,
         50, 48, 50, 48, 50, 48, 50, 48, 
@@ -201,21 +202,44 @@ module chess_top_master(
 
         endcase
     end
+
     reg [0:0] temp;
-    // info
     always @(posedge clk) begin
         if(state == INIT) begin
+            for(integer i = 0; i < 64; i = i+1) begin
+                board[i] <= board_read_only[i];
+            end
             if(start_op) begin
-                board[cursor] <= board[cursor] | 6'b000001;
+                board[cursor] <= board[cursor] | 6'b000_001;
             end
         end
-        else if(state == GAME && is_move) begin
-            board[pre_cursor] <= board[pre_cursor] & 6'b111110;
-            temp <= 1;
-        end
-        else if (temp) begin
-            board[cursor] <= board[cursor] | 6'b000001;
-            temp <= 0;
+        else if(state == GAME) begin
+            if(is_move) begin
+                board[pre_cursor] <= board[pre_cursor] & 6'b111_110;
+                temp <= 1;
+            end
+            else if (!is_chess_move && temp) begin
+                board[cursor] <= board[cursor] | 6'b000_001;
+                temp <= 0;
+            end
+            else if(is_chess_move) begin
+                if(board[pre_position] & 6'b000_010 == 6'b0) begin
+                    board[pre_position] <= 6'b110_000;
+                end
+                else begin
+                    board[pre_position] <= 6'b110_010;
+                end
+                temp <= 1;
+            end
+            else if(!is_move && temp) begin
+                if(board[position] & 6'b000_010 == 6'b0) begin
+                    board[position] <= info_mod & 6'b111_101;
+                end
+                else begin
+                    board[position] <= info_mod | 6'b000_010;
+                end
+                temp <= 0;
+            end
         end
     end
     
