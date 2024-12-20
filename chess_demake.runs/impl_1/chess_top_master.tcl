@@ -70,17 +70,17 @@ set rc [catch {
   create_project -in_memory -part xc7a35tcpg236-1
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
-  set_property webtalk.parent_dir C:/GitHub/ChessDemake/chess_demake.cache/wt [current_project]
-  set_property parent.project_path C:/GitHub/ChessDemake/chess_demake.xpr [current_project]
-  set_property ip_repo_paths {{C:/OneDrive/®à­±/NTHU/Hardware Design/Final Project/ip/Keyboard-Controller}} [current_project]
+  set_property webtalk.parent_dir C:/Users/st103/vivadoProject/ChessDemake/chess_demake.cache/wt [current_project]
+  set_property parent.project_path C:/Users/st103/vivadoProject/ChessDemake/chess_demake.xpr [current_project]
+  set_property ip_repo_paths {{C:/Users/st103/OneDrive/×ÀÃæ/NTHU/Hardware Design/Final Project/ip/Keyboard-Controller}} [current_project]
   update_ip_catalog
-  set_property ip_output_repo C:/GitHub/ChessDemake/chess_demake.cache/ip [current_project]
+  set_property ip_output_repo C:/Users/st103/vivadoProject/ChessDemake/chess_demake.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
   set_property XPM_LIBRARIES XPM_MEMORY [current_project]
-  add_files -quiet C:/GitHub/ChessDemake/chess_demake.runs/synth_1/chess_top_master.dcp
-  read_ip -quiet C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0.xci
-  read_ip -quiet C:/GitHub/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
-  read_xdc {{C:/GitHub/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc}}
+  add_files -quiet C:/Users/st103/vivadoProject/ChessDemake/chess_demake.runs/synth_1/chess_top_master.dcp
+  read_ip -quiet C:/Users/st103/vivadoProject/ChessDemake/chess_demake.srcs/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0.xci
+  read_ip -quiet C:/Users/st103/vivadoProject/ChessDemake/chess_demake.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
+  read_xdc {{C:/Users/st103/vivadoProject/ChessDemake/chess_demake.srcs/constrs_1/imports/Imported Module/chess_constraint.xdc}}
   link_design -top chess_top_master -part xc7a35tcpg236-1
   close_msg_db -file init_design.pb
 } RESULT]

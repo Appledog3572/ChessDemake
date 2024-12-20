@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Fri Dec 20 16:22:55 2024
-| Host         : MSI running 64-bit major release  (build 9200)
+| Date         : Fri Dec 20 18:06:47 2024
+| Host         : BensonLaptop running 64-bit major release  (build 9200)
 | Command      : report_utilization -file chess_top_master_utilization_synth.rpt -pb chess_top_master_utilization_synth.pb
 | Design       : chess_top_master
 | Device       : 7a35tcpg236-1
@@ -30,13 +30,13 @@ Table of Contents
 +----------------------------+------+-------+-----------+-------+
 |          Site Type         | Used | Fixed | Available | Util% |
 +----------------------------+------+-------+-----------+-------+
-| Slice LUTs*                | 1101 |     0 |     20800 |  5.29 |
-|   LUT as Logic             | 1077 |     0 |     20800 |  5.18 |
-|   LUT as Memory            |   24 |     0 |      9600 |  0.25 |
-|     LUT as Distributed RAM |   24 |     0 |           |       |
+| Slice LUTs*                | 1171 |     0 |     20800 |  5.63 |
+|   LUT as Logic             | 1139 |     0 |     20800 |  5.48 |
+|   LUT as Memory            |   32 |     0 |      9600 |  0.33 |
+|     LUT as Distributed RAM |   32 |     0 |           |       |
 |     LUT as Shift Register  |    0 |     0 |           |       |
-| Slice Registers            |  605 |     0 |     41600 |  1.45 |
-|   Register as Flip Flop    |  605 |     0 |     41600 |  1.45 |
+| Slice Registers            |  649 |     0 |     41600 |  1.56 |
+|   Register as Flip Flop    |  649 |     0 |     41600 |  1.56 |
 |   Register as Latch        |    0 |     0 |     41600 |  0.00 |
 | F7 Muxes                   |   76 |     0 |     16300 |  0.47 |
 | F8 Muxes                   |   36 |     0 |      8150 |  0.44 |
@@ -59,7 +59,7 @@ Table of Contents
 | 0     |          Yes |           - |          Set |
 | 536   |          Yes |           - |        Reset |
 | 6     |          Yes |         Set |            - |
-| 63    |          Yes |       Reset |            - |
+| 107   |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -151,18 +151,18 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| LUT4     |  581 |                 LUT |
+| LUT4     |  588 |                 LUT |
 | FDCE     |  536 |        Flop & Latch |
-| LUT6     |  269 |                 LUT |
-| LUT5     |  126 |                 LUT |
-| LUT2     |  119 |                 LUT |
+| LUT6     |  312 |                 LUT |
+| LUT2     |  139 |                 LUT |
+| LUT5     |  129 |                 LUT |
+| FDRE     |  107 |        Flop & Latch |
 | MUXF7    |   76 |               MuxFx |
-| CARRY4   |   64 |          CarryLogic |
-| FDRE     |   63 |        Flop & Latch |
-| LUT3     |   42 |                 LUT |
+| CARRY4   |   76 |          CarryLogic |
+| LUT3     |   39 |                 LUT |
 | MUXF8    |   36 |               MuxFx |
-| LUT1     |   29 |                 LUT |
-| RAMD64E  |   24 |  Distributed Memory |
+| RAMD64E  |   32 |  Distributed Memory |
+| LUT1     |   28 |                 LUT |
 | OBUF     |   20 |                  IO |
 | FDSE     |    6 |        Flop & Latch |
 | IBUF     |    4 |                  IO |

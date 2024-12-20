@@ -65,6 +65,7 @@ module cursor_controller(
                 pre_position <= 0;
                 position <= 0;
                 is_move <= 0;
+                is_hold <= 0;
                 mode <= UNHOLD;
             end
             GAME: begin
@@ -98,8 +99,8 @@ module cursor_controller(
                 end
                 else if(key_down[last_change] && last_change == ENTER_CODE && pre_key == 0) begin //D
                     is_move <= 0;
-                    LED <= 4'b1111;
                     if (mode == UNHOLD && info != 48 && info != 50) begin
+                        LED <= 4'b1111;
                         mode <= HOLD;
                         is_chess_move <= 0;
                         is_hold <= 1;
@@ -116,6 +117,7 @@ module cursor_controller(
                 else begin
                     LED <= LED;
                     is_move <= 0;
+                    is_hold <= 0; 
                     is_chess_move <= 0;
                 end
             end

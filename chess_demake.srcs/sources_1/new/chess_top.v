@@ -63,7 +63,6 @@ module chess_top_master(
     };
     wire [5:0] cursor, pre_cursor, position, pre_position, hold_position;
     wire [5:0] info = board[(h_cnt-80)/60 + 8*(v_cnt/60)];
-    wire [5:0] info_mod;
 
     clock_divider #(.n(2)) m2(.clk(clk), .clk_div(clk_25MHz));
     clock_divider #(.n(15)) m15(.clk(clk), .clk_div(clk_div_15));
@@ -101,7 +100,7 @@ module chess_top_master(
     cursor_controller cc(
         .clk(clk),
         .rst(rst),
-        .info(info),
+        .info(board[cursor]),
         .PS2_CLK(PS2_CLK),
         .PS2_DATA(PS2_DATA),
         .state(state),
@@ -189,7 +188,7 @@ module chess_top_master(
     always @(posedge clk) begin
         hold_timer <= ~hold_timer;
     end
-    integer i, move_cnt, chess_move_cnt;
+    integer i, move_cnt, chess_move_cnt, hold_cnt;
     always @(posedge clk) begin
         if(rst) begin
             init <= 1'b0;
@@ -215,16 +214,15 @@ module chess_top_master(
             end
             else if(state == GAME) begin
                 // chess select
-                if(is_hold && hold_timer) begin
+                if(is_hold && hold_cnt == 0) begin
                     board[hold_position] <= board[hold_position] | 6'b000_001;
+                    hold_cnt <= 1;
                 end
                 // cursor move
                 else if(is_move) begin
-                    board[pre_cursor] <= board[pre_cursor] & 6'b111_110;
-                    move_cnt <= 2;
-                end
-                else if(!is_chess_move && move_cnt == 2) begin
-                    board[cursor] <= board[cursor] | 6'b000_001;
+                    if(hold_cnt == 0 || (pre_cursor != hold_position)) begin
+                        board[pre_cursor] <= board[pre_cursor] & 6'b111_110;
+                    end
                     move_cnt <= 1;
                 end
                 else if(!is_chess_move && move_cnt == 1) begin
@@ -233,20 +231,23 @@ module chess_top_master(
                 end
                 // chess move
                 else if(is_chess_move) begin
-                    if(board[position] & 6'b000_010 == 6'b0) begin
-                        board[position] <= board[pre_position] & 6'b111_101;
+                    hold_cnt <= 0;
+                    if(cursor != hold_position) begin
+                        if((board[cursor] & 6'b000_010) == 6'b000_000) begin // green tile
+                            board[cursor] <= (board[hold_position] & 6'b111_101);
+                        end
+                        else begin
+                            board[cursor] <= (board[hold_position] | 6'b000_010);
+                        end
+                        chess_move_cnt <= 1;
                     end
-                    else begin
-                        board[position] <= board[pre_position] | 6'b000_010;
-                    end
-                    chess_move_cnt <= 1;
                 end
                 else if(!is_move && chess_move_cnt == 1) begin
-                    if(board[pre_position] & 6'b000_010 == 6'b0) begin
-                        board[pre_position] <= 6'b110_000;
+                    if((board[hold_position] & 6'b000_010) == 6'b000_000) begin //green tile
+                        board[hold_position] <= 6'b110_000;
                     end
                     else begin
-                        board[pre_position] <= 6'b110_010;
+                        board[hold_position] <= 6'b110_010;
                     end
                     chess_move_cnt <= 0;
                 end
