@@ -25,9 +25,8 @@ module mem_addr_gen(
         if(h_cnt > 80 && h_cnt < 560) begin
             pixel_addr = (((((h_cnt>>1)+`offset)%30)+x*30)%`width + `width*((((v_cnt>>1)%30)+y*30)%`height));
         end
-        else begin
+        else
             pixel_addr = 31;
-        end
     end
     
 endmodule

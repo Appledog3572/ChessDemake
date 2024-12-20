@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date             : Thu Dec 19 21:52:05 2024
-| Host             : BensonLaptop running 64-bit major release  (build 9200)
+| Date             : Fri Dec 20 16:23:45 2024
+| Host             : MSI running 64-bit major release  (build 9200)
 | Command          : report_power -file chess_top_master_power_routed.rpt -pb chess_top_master_power_summary_routed.pb -rpx chess_top_master_power_routed.rpx
 | Design           : chess_top_master
 | Device           : xc7a35tcpg236-1
@@ -53,17 +53,17 @@ Table of Contents
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
 | Clocks                   |     0.002 |        3 |       --- |             --- |
-| Slice Logic              |     0.002 |      912 |       --- |             --- |
-|   LUT as Logic           |     0.002 |      451 |     20800 |            2.17 |
-|   CARRY4                 |    <0.001 |       66 |      8150 |            0.81 |
-|   Register               |    <0.001 |      159 |     41600 |            0.38 |
+| Slice Logic              |     0.002 |     2319 |       --- |             --- |
+|   LUT as Logic           |     0.002 |     1180 |     20800 |            5.67 |
+|   CARRY4                 |    <0.001 |       68 |      8150 |            0.83 |
+|   Register               |    <0.001 |      702 |     41600 |            1.69 |
 |   LUT as Distributed RAM |    <0.001 |       24 |      9600 |            0.25 |
-|   F7/F8 Muxes            |    <0.001 |       27 |     32600 |            0.08 |
+|   F7/F8 Muxes            |    <0.001 |      135 |     32600 |            0.41 |
 |   BUFG                   |    <0.001 |        1 |        32 |            3.13 |
-|   Others                 |     0.000 |       63 |       --- |             --- |
-| Signals                  |     0.003 |      726 |       --- |             --- |
+|   Others                 |     0.000 |       61 |       --- |             --- |
+| Signals                  |     0.002 |     1394 |       --- |             --- |
 | Block RAM                |    <0.001 |       18 |        50 |           36.00 |
-| I/O                      |     0.010 |       23 |       106 |           21.70 |
+| I/O                      |     0.010 |       26 |       106 |           24.53 |
 | Static Power             |     0.073 |          |           |                 |
 | Total                    |     0.090 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
@@ -98,7 +98,7 @@ Table of Contents
 | User Input Data             | Confidence | Details                                                | Action                                                                                                             |
 +-----------------------------+------------+--------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
 | Design implementation state | High       | Design is routed                                       |                                                                                                                    |
-| Clock nodes activity        | Low        | User specified less than 75% of clocks                 | Provide missing clock activity with a constraint file, simulation results or by editing the "By Clock Domain" view |
+| Clock nodes activity        | Medium     | More than 5% of clocks are missing user specification  | Provide missing clock activity with a constraint file, simulation results or by editing the "By Clock Domain" view |
 | I/O nodes activity          | Low        | More than 75% of inputs are missing user specification | Provide missing input activity with simulation results or by editing the "By Resource Type -> I/Os" view           |
 | Internal nodes activity     | Medium     | User specified less than 25% of internal nodes         | Provide missing internal nodes activity with simulation results or by editing the "By Resource Type" views         |
 | Device models               | High       | Device models are Production                           |                                                                                                                    |
@@ -145,12 +145,11 @@ Table of Contents
 | Name                   | Power (W) |
 +------------------------+-----------+
 | chess_top_master       |     0.017 |
-|   KD                   |     0.002 |
-|     inst               |     0.002 |
-|       inst             |     0.002 |
 |   blk_mem_gen_0_inst   |     0.001 |
 |     U0                 |     0.001 |
 |       inst_blk_mem_gen |     0.001 |
+|   cc                   |     0.002 |
+|     kd1                |     0.002 |
 |   vga_inst             |     0.002 |
 +------------------------+-----------+
 

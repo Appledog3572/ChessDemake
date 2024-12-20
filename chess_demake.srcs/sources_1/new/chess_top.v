@@ -13,7 +13,8 @@ module chess_top_master(
     output wire [3:0] vgaBlue,
     output wire hsync,
     output wire vsync,
-    output wire [1:0] debug
+    output wire [1:0] debug,
+    output wire [3:0] LED
     // output wire [1:0] win, // 0->p1 1->p2
     // output reg slave_count
 );
@@ -71,15 +72,7 @@ module chess_top_master(
     one_pulse op(.clk(clk), .pb_in(start_db), .pb_out(start_op));
     debounce db1(.pb_debounced(TEst), .pb(TEST), .clk(clk_div_15));
     one_pulse op1(.clk(clk), .pb_in(TEst), .pb_out(test));
-    KeyboardDecoder KD(
-	    .rst(rst),
-	    .clk(clk),
-	    .PS2_DATA(PS2_DATA),
-	    .PS2_CLK(PS2_CLK),
-	    .key_down(key_down),
-	    .last_change(last_change),
-	    .key_valid(been_ready)
-    );
+
     vga_controller vga_inst(
         .pclk(clk_25MHz),
         .reset(rst),
@@ -108,20 +101,20 @@ module chess_top_master(
     cursor_controller cc(
         .clk(clk),
         .rst(rst),
+        .info(info),
         .PS2_CLK(PS2_CLK),
         .PS2_DATA(PS2_DATA),
-        .test(test),
         .state(state),
         .cursor(cursor),
         .pre_cursor(pre_cursor),
+        .hold_position(hold_position),
         .pre_position(pre_position),
         .position(position),
-        .hold_position(hold_position),
-        .is_move(is_move),
         .is_chess_move(is_chess_move),
-        .is_hold(is_hold)
+        .is_move(is_move),
+        .is_hold(is_hold),
+        .LED(LED)
     );
-
     always @(posedge clk, posedge rst) begin
         if(rst) begin
             state <= INIT;
