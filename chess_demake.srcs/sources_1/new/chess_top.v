@@ -23,18 +23,6 @@ module chess_top_master(
     parameter [1:0] PAUSE = 2'b10;
     parameter [1:0] FINISH = 2'b11;
 
-    parameter [8:0] ENTER_CODE = 9'b0_0101_1010;
-    parameter [8:0] KEY_CODES [0:7] = {
-        9'b0_0001_1101, // W => 1D
-        9'b0_0001_1100, // A => 1C
-        9'b0_0001_1011, // S => 1B
-        9'b0_0010_0011, // D => 23
-        9'b1_0111_0101, // UP => E075
-        9'b1_0110_1011, // LEFT => E06B
-        9'b1_0111_0010, // DOWN => E072
-        9'b1_0111_0100 // RIGHT => E074
-    };
-
     //state
     reg [1:0] state, next_state;
     assign debug = state;
@@ -43,7 +31,6 @@ module chess_top_master(
     wire [511:0] key_down;
     wire [8:0] last_change;
     wire been_ready;
-    wire enter_down = (key_down[ENTER_CODE] == 1'b1);
     reg [4:0] key_num;
 
     //VGA
@@ -203,6 +190,7 @@ module chess_top_master(
         endcase
     end
 
+    // board control
     reg [0:0] temp;
     always @(posedge clk) begin
         if(state == INIT) begin
