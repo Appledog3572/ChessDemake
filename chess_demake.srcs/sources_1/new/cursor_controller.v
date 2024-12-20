@@ -32,6 +32,11 @@ module cursor_controller(
         9'b1_0111_0100 // RIGHT => E074
     };
 
+    reg [511:0] key_down;
+    reg [8:0] last_change;
+    reg [8:0] pre_key;
+    reg key_valid;
+
     KeyboardDecoder kd1 (
 	.key_down(key_down),
 	.last_change(last_change),
@@ -39,10 +44,12 @@ module cursor_controller(
 	.PS2_DATA(PS2_DATA),
 	.PS2_CLK(PS2_CLK),
 	.rst(rst),
-	clk(clk)
+	.clk(clk)
     );
 
-
+    always @(posedge clk) begin
+        pre_key <= last_change;
+    end
     always @(posedge clk) begin
         case(state)
             INIT: begin
@@ -54,7 +61,22 @@ module cursor_controller(
                 info_mod <= 0;
             end
             GAME: begin
-                if(test) begin
+                if(key_valid && key_down[last_change] && (last_change == KEY_CODES[0] || last_change == key) && pre_key != last_change && cursor > 7) begin //W
+                    is_move <= 1;
+                    cursor <= cursor - 8;
+                    pre_cursor <= cursor;
+                end
+                else if(key_valid && key_down[last_change] && last_change == KEY_CODES[1] && pre_key != last_change && (cursor % 8 != 0)) begin //A
+                    is_move <= 1;
+                    cursor <= cursor - 1;
+                    pre_cursor <= cursor;
+                end
+                else if(key_valid && key_down[last_change] && last_change == KEY_CODES[2] && pre_key != last_change && cursor < 56) begin //S
+                    is_move <= 1;
+                    cursor <= cursor + 8;
+                    pre_cursor <= cursor;
+                end
+                else if(key_valid && key_down[last_change] && last_change == KEY_CODES[3] && pre_key != last_change && ((cursor+1) % 8 != 0)) begin //D
                     is_move <= 1;
                     cursor <= cursor + 1;
                     pre_cursor <= cursor;
