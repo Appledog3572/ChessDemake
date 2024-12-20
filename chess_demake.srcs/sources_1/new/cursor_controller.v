@@ -20,6 +20,29 @@ module cursor_controller(
     parameter [1:0] PAUSE = 2'b10;
     parameter [1:0] FINISH = 2'b11;
 
+    parameter [8:0] ENTER_CODE = 9'b0_0101_1010;
+    parameter [8:0] KEY_CODES [0:7] = {
+        9'b0_0001_1101, // W => 1D
+        9'b0_0001_1100, // A => 1C
+        9'b0_0001_1011, // S => 1B
+        9'b0_0010_0011, // D => 23
+        9'b1_0111_0101, // UP => E075
+        9'b1_0110_1011, // LEFT => E06B
+        9'b1_0111_0010, // DOWN => E072
+        9'b1_0111_0100 // RIGHT => E074
+    };
+
+    KeyboardDecoder kd1 (
+	.key_down(key_down),
+	.last_change(last_change),
+	.key_valid(key_valid),
+	.PS2_DATA(PS2_DATA),
+	.PS2_CLK(PS2_CLK),
+	.rst(rst),
+	clk(clk)
+    );
+
+
     always @(posedge clk) begin
         case(state)
             INIT: begin
