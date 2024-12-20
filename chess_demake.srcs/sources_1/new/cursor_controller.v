@@ -7,6 +7,7 @@ module cursor_controller(
     inout wire PS2_CLK,
     inout wire PS2_DATA,
     input wire [1:0] state,
+    output reg [0:0] player, //0 -> white, 1 -> black
     output reg [5:0] cursor,
     output reg [5:0] pre_cursor,
     output reg [5:0] hold_position,
@@ -14,13 +15,14 @@ module cursor_controller(
     output reg [5:0] position,
     output reg is_chess_move,
     output reg is_move,
-    output reg is_hold,
-    output reg [3:0] LED
+    output reg is_hold
 );
     parameter [1:0] INIT = 2'b00;
     parameter [1:0] GAME = 2'b01;
     parameter [1:0] PAUSE = 2'b10;
     parameter [1:0] FINISH = 2'b11;
+    parameter [0:0] WHITE = 1'b0;
+    parameter [0:0] BLACK = 1'b1;
 
     parameter [8:0] ENTER_CODE = 9'b0_0101_1010;
     parameter [8:0] KEY_CODES [0:7] = {
@@ -67,6 +69,7 @@ module cursor_controller(
                 is_move <= 0;
                 is_hold <= 0;
                 mode <= UNHOLD;
+                player <= WHITE;
             end
             GAME: begin
                 if(key_down[last_change] && (last_change == KEY_CODES[0] || last_change == KEY_CODES[4]) && pre_key == 0 && cursor > 7) begin //W
@@ -74,48 +77,50 @@ module cursor_controller(
                     is_chess_move <= 0;
                     cursor <= cursor - 8;
                     pre_cursor <= cursor;
-                    LED <= 4'b0001;
                 end
                 else if(key_down[last_change] && (last_change == KEY_CODES[1] || last_change == KEY_CODES[5]) && pre_key == 0 && (cursor % 8 != 0)) begin //A
                     is_move <= 1;
                     is_chess_move <= 0;
                     cursor <= cursor - 1;
                     pre_cursor <= cursor;
-                    LED <= 4'b0010;
                 end
                 else if(key_down[last_change] && (last_change == KEY_CODES[2] || last_change == KEY_CODES[6]) && pre_key == 0 && cursor < 56) begin //S
                     is_move <= 1;
                     is_chess_move <= 0;
                     cursor <= cursor + 8;
                     pre_cursor <= cursor;
-                    LED <= 4'b0100;
                 end
                 else if(key_down[last_change] && (last_change == KEY_CODES[3] || last_change == KEY_CODES[7]) && pre_key == 0 && ((cursor+1) % 8 != 0)) begin //D
                     is_move <= 1;
                     is_chess_move <= 0;
                     cursor <= cursor + 1;
                     pre_cursor <= cursor;
-                    LED <= 4'b1000;
                 end
                 else if(key_down[last_change] && last_change == ENTER_CODE && pre_key == 0) begin //D
                     is_move <= 0;
-                    if (mode == UNHOLD && info != 48 && info != 50) begin
-                        LED <= 4'b1111;
+                    if (mode == UNHOLD && info != 49 && info != 51 && ((info[2] == 0 && player == BLACK) || (info[2] == 1 && player == WHITE))) begin
                         mode <= HOLD;
                         is_chess_move <= 0;
                         is_hold <= 1;
                         hold_position <= cursor;
                     end
                     else if (mode == HOLD) begin
+                        if (cursor != hold_position) begin
+                            player <= ~player;
+                        end
                         mode <= UNHOLD;
                         is_hold <= 0;
                         is_chess_move <= 1;
                         pre_position <= hold_position;
                         position <= cursor;
                     end
+                    else begin
+                        mode <= UNHOLD;
+                        is_hold <= 0;
+
+                    end
                 end
                 else begin
-                    LED <= LED;
                     is_move <= 0;
                     is_hold <= 0; 
                     is_chess_move <= 0;
