@@ -377,7 +377,42 @@ module chess_top_master(
     always @(posedge clk) begin
         case(board[hold_position] & 6'b111_000)
             6'b000_000: begin //pawn
-                move_valid = 1'b1;
+                if(cursor != hold_position) begin
+                    move_valid = 1'b0;
+                    if((board[hold_position] & 6'b000_100) == 6'b000_000) begin // black pawn
+                        if((hold_position_y == 1) && (cursor_y == 3)) begin // first move and double forward
+                            if((cursor_x == hold_position_x) && ((board[hold_position + 8] == 48) || (board[hold_position + 8] == 50))) begin
+                                move_valid = 1'b1;
+                            end
+                        end
+                        else if((cursor_y - 1 == hold_position_y) && ((cursor_x + 1 == hold_position_x) || (cursor_x - 1 == hold_position_x)) && ((board[cursor] != 49) && (board[cursor] != 51))) begin
+                            move_valid = 1'b1;
+                        end
+                        else begin
+                            if((cursor_x == hold_position_x) && (cursor_y - 1 == hold_position_y) && ((board[cursor] == 49) || (board[cursor] == 51))) begin
+                                move_valid = 1'b1;
+                            end
+                        end
+                    end
+                    else if((board[hold_position] & 6'b000_100) == 6'b000_100) begin // white pawn
+                        if((hold_position_y == 6) && (cursor_y == 4)) begin // first move and double forward
+                            if((cursor_x == hold_position_x) && ((board[hold_position - 8] == 48) || (board[hold_position - 8] == 50))) begin
+                                move_valid = 1'b1;
+                            end
+                        end
+                        else if((cursor_y + 1 == hold_position_y) && ((cursor_x + 1 == hold_position_x) || (cursor_x - 1 == hold_position_x)) && ((board[cursor] != 49) && (board[cursor] != 51))) begin
+                            move_valid = 1'b1;
+                        end
+                        else begin
+                            if((cursor_x == hold_position_x) && (cursor_y + 1 == hold_position_y) && ((board[cursor] == 49) || (board[cursor] == 51))) begin
+                                move_valid = 1'b1;
+                            end
+                        end
+                    end
+                end
+                else begin
+                    move_valid = 1'b0;
+                end
             end
             6'b001_000: begin // knight
                 if(cursor != hold_position) begin
