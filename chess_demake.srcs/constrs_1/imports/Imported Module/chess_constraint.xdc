@@ -183,14 +183,14 @@ set_property PACKAGE_PIN T18 [get_ports start]
 set_property PACKAGE_PIN A14 [get_ports {player}]
    set_property IOSTANDARD LVCMOS33 [get_ports {player}]
 ## Sch name = JB2
-set_property PACKAGE_PIN A16 [get_ports {player_selected}]
-   set_property IOSTANDARD LVCMOS33 [get_ports {player_selected}]
+set_property PACKAGE_PIN A16 [get_ports {player_output}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {player_output}]
 ## Sch name = JB3
- set_property PACKAGE_PIN B15 [get_ports {reset_output}]
-    set_property IOSTANDARD LVCMOS33 [get_ports {reset_output}]
+set_property PACKAGE_PIN B15 [get_ports {reset_output}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {reset_output}]
 ## Sch name = JB4
-#  set_property PACKAGE_PIN B16 [get_ports {echo}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {echo}]
+set_property PACKAGE_PIN B16 [get_ports {start_output}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {start_output}]
 ## Sch name = JB7
 # set_property PACKAGE_PIN A15 [get_ports {motor_cw[0]}]
 #    set_property IOSTANDARD LVCMOS33 [get_ports {motor_cw[0]}]
@@ -208,14 +208,14 @@ set_property PACKAGE_PIN A16 [get_ports {player_selected}]
 
 ## Pmod Header JC
 ## Sch name = JC1
-# set_property PACKAGE_PIN K17 [get_ports {JC[0]}]
-#    set_property IOSTANDARD LVCMOS33 [get_ports {JC[0]}]
+set_property PACKAGE_PIN K17 [get_ports {timeup_input}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {timeup_input}]
 ## Sch name = JC2
-# set_property PACKAGE_PIN M18 [get_ports {JC[1]}]
-#    set_property IOSTANDARD LVCMOS33 [get_ports {JC[1]}]
+set_property PACKAGE_PIN M18 [get_ports {win[0]}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {win[0]}]
 ## Sch name = JC3
-# set_property PACKAGE_PIN N17 [get_ports {JC[2]}]
-#    set_property IOSTANDARD LVCMOS33 [get_ports {JC[2]}]
+set_property PACKAGE_PIN N17 [get_ports {win[1]}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {win[1]}]
 ## Sch name = JC4
 # set_property PACKAGE_PIN P18 [get_ports {JC[3]}]
 #    set_property IOSTANDARD LVCMOS33 [get_ports {JC[3]}]

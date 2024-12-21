@@ -8,6 +8,7 @@ module chess_top_master(
     inout wire PS2_CLK,
     inout wire PS2_DATA,
     input wire player_select,
+    input wire timeup_input,
     output wire [3:0] vgaRed,
     output wire [3:0] vgaGreen,
     output wire [3:0] vgaBlue,
@@ -17,29 +18,34 @@ module chess_top_master(
     output wire [6:0] DISPLAY,
     output wire [3:0] DIGIT,
     output wire player,
-    output reg player_selected,
-    output wire reset_output
-    // output wire [1:0] win, // 0->p1 1->p2
+    output wire player_output,
+    output reg reset_output,
+    output wire start_output,
+    output reg [1:0] win // 0->p1 1->p2
 );
-
-    assign reset_output = rst;
 
     parameter [1:0] INIT = 2'b00;
     parameter [1:0] GAME = 2'b01;
     parameter [1:0] PAUSE = 2'b10;
     parameter [1:0] FINISH = 2'b11;
 
-    //state
+    assign start_output = (state == GAME)? 1'b1 : 1'b0;
+    assign player_output = player_select;
+
+    // state
     reg [1:0] state, next_state;
     assign debug = state;
 
-    //keyboard
+    // LED
+    reg [15:0] flash;
+
+    // keyboard
     wire [511:0] key_down;
     wire [8:0] last_change;
     wire been_ready;
     reg [4:0] key_num;
 
-    //VGA
+    // VGA
     wire [11:0] pixel;
     wire valid;
     wire [9:0] h_cnt; //640
@@ -66,6 +72,7 @@ module chess_top_master(
     };
     wire [5:0] cursor, pre_cursor, position, pre_position, hold_position;
     wire [5:0] info = board[(h_cnt-80)/60 + 8*(v_cnt/60)];
+    wire timeup = ({game_timer_M_ten, game_timer_M_one, game_timer_S_ten, game_timer_S_one} == 16'h0000)? 1'b1 : 1'b0;
     reg player_selected;
     integer game_timer_m, game_timer_s;
     
@@ -79,14 +86,17 @@ module chess_top_master(
     clock_divider #(.n(2)) m2(.clk(clk), .clk_div(clk_25MHz));
     clock_divider #(.n(15)) m15(.clk(clk), .clk_div(clk_div_15));
     clock_divider #(.n(22)) m22(.clk(clk), .clk_div(clk_div_22));
+    clock_divider #(.n(26)) m26(.clk(clk), .clk_div(clk_div_26));
     clock_divider #(.n(27)) m27(.clk(clk), .clk_div(clk_div_27));
-    debounce db(.pb_debounced(start_db), .pb(start), .clk(clk_div_15));
-    one_pulse op(.clk(clk), .pb_in(start_db), .pb_out(start_op));
-    SevenSegment SS(.display(DISPLAY), .digit(DIGIT), .nums(nums), .rst(rst), .clk(clk));
+    debounce db1(.pb_debounced(start_db), .pb(start), .clk(clk_div_15));
+    one_pulse op1(.clk(clk), .pb_in(start_db), .pb_out(start_op));
+    debounce db2(.pb_debounced(rst_db), .pb(rst), .clk(clk_div_15));
+    one_pulse op2(.clk(clk), .pb_in(rst_db), .pb_out(rst_op));
+    SevenSegment SS(.display(DISPLAY), .digit(DIGIT), .nums(nums), .rst(rst_op), .clk(clk));
 
     vga_controller vga_inst(
         .pclk(clk_25MHz),
-        .reset(rst),
+        .reset(rst_op),
         .hsync(hsync),
         .vsync(vsync),
         .valid(valid),
@@ -95,7 +105,7 @@ module chess_top_master(
     );
     mem_addr_gen mem_addr_gen_inst(
         .clk(clk_div_22),
-        .rst(rst),
+        .rst(rst_op),
         .info(info),
         .h_cnt(h_cnt),
         .v_cnt(v_cnt),
@@ -111,7 +121,7 @@ module chess_top_master(
     );
     cursor_controller cc(
         .clk(clk),
-        .rst(rst),
+        .rst(rst_op),
         .info(board[cursor]),
         .PS2_CLK(PS2_CLK),
         .PS2_DATA(PS2_DATA),
@@ -126,8 +136,8 @@ module chess_top_master(
         .is_move(is_move),
         .is_hold(is_hold)
     );
-    always @(posedge clk, posedge rst) begin
-        if(rst) begin
+    always @(posedge clk, posedge rst_op) begin
+        if(rst_op) begin
             state <= INIT;
         end
         else begin
@@ -149,7 +159,7 @@ module chess_top_master(
                 if(pause) begin
                     next_state = PAUSE;
                 end
-                else if(start_op) begin //has_king != 2'b11
+                else if(has_king != 2'b11 || timeup || timeup_input) begin
                     next_state = FINISH;
                 end
                 else begin
@@ -176,68 +186,39 @@ module chess_top_master(
         endcase
     end
     
-    // player
-    always @(posedge clk) begin
-        if(state == INIT && start_op) begin
-            player_selected <= player_select;
+    // flash
+    always @(posedge clk_div_26) begin
+        if(state == INIT) begin
+            flash <= 16'hFFFF;
+        end
+        else if(state == FINISH) begin
+            flash <= ~flash;
         end
     end
 
-    // timer
-    always @(posedge clk_div_27) begin
-        case(state)
-            INIT: begin
-                game_timer_M_ten <= 4'd0;
-                game_timer_M_one <= 4'd1;
-                game_timer_S_ten <= 4'd0;
-                game_timer_S_one <= 4'd0;
-                LED <= 16'h0000;
+    // player & win condition
+    always @(posedge clk) begin
+        if(state == INIT) begin
+            win <= 2'b00;
+            if(start_op) begin
+                player_selected <= player_select;
             end
-            GAME: begin
-                if(player == player_selected) begin
-                    LED <= 16'hFFFF;
-                    if(is_chess_move) begin
-                        game_timer_S_one <= game_timer_S_one + 4'd5;
-                        if(game_timer_S_one > 4'd10) begin
-                            game_timer_S_one <= game_timer_S_one - 4'd10;
-                            game_timer_S_ten <= game_timer_S_ten + 4'd1;
-                        end
-                        if(game_timer_S_ten >= 4'd6) begin
-                            game_timer_S_ten <= 4'd0;
-                            game_timer_M_one <= game_timer_M_one + 4'd1;
-                        end
-                    end
-                    else begin
-                        if(game_timer_S_one == 4'd0 && game_timer_S_ten > 4'd0) begin
-                            game_timer_S_ten = game_timer_S_ten - 1;
-                            game_timer_S_one = 4'd10;
-                        end
-                        else if(game_timer_S_ten == 0 && game_timer_M_one > 0) begin
-                            game_timer_M_one = game_timer_M_one - 1;
-                            game_timer_S_ten = 4'd5;
-                            game_timer_S_one = 4'd10;
-                        end
-                        game_timer_S_one = game_timer_S_one - 4'd1;
-                    end
-                end
-                else begin
-                    LED <= 16'h0000;
-                end
+        end
+        else if(state == FINISH) begin
+            if(timeup_input || has_king[~player_selected] == 1'b0) begin
+                win[player_selected] <= 1'b1;
             end
-            default: begin
-                game_timer_M_ten <= game_timer_M_ten;
-                game_timer_M_one <= game_timer_M_one;
-                game_timer_S_ten <= game_timer_S_ten;
-                game_timer_S_one <= game_timer_S_one;
+            else if(timeup || has_king[player_selected] == 1'b0) begin
+                win[~player_selected] <= 1'b1;
             end
-        endcase
+        end
     end
 
     // board control
     reg [0:0] init;
     integer i, move_cnt, chess_move_cnt, hold_cnt;
     always @(posedge clk) begin
-        if(rst) begin
+        if(rst_op) begin
             init <= 1'b0;
             move_cnt <= 0;
             chess_move_cnt <= 0;
@@ -247,8 +228,11 @@ module chess_top_master(
                 if(!init) begin
                     init <= 1'b1;
                     i <= 0;
+                    has_king <= 2'b11;
+                    reset_output <= 1'b1;
                 end
                 else begin
+                    reset_output <= 1'b0;
                     if(i < 64) begin
                         board[i] <= board_read_only[i];
                         i <= i + 1;
@@ -280,6 +264,14 @@ module chess_top_master(
                 else if(is_chess_move) begin
                     hold_cnt <= 0;
                     if(cursor != hold_position) begin
+                        if(board[cursor] >= 40 && board[cursor] <= 47) begin
+                            if(board[cursor] <= 43) begin
+                                has_king[1] <= 1'b0;
+                            end
+                            else begin
+                                has_king[0] <= 1'b0;
+                            end
+                        end
                         if((board[cursor] & 6'b000_010) == 6'b000_000) begin // green tile
                             board[cursor] <= (board[hold_position] & 6'b111_101);
                         end
@@ -300,6 +292,79 @@ module chess_top_master(
                 end
             end
         end
+    end
+
+    // timer
+    reg [27:0] second_counter;
+    reg [26:0] flash_counter;
+    always @(posedge clk) begin
+        case(state)
+            INIT: begin
+                game_timer_M_ten <= 4'd0;
+                game_timer_M_one <= 4'd1;
+                game_timer_S_ten <= 4'd0;
+                game_timer_S_one <= 4'd0;
+                LED <= (player_select == 1'b0)? 16'hFFFF : 16'h0000;
+                second_counter <= 28'd0;
+            end
+            GAME: begin
+                second_counter <= second_counter + 1'b1;
+                if(player == player_selected) begin
+                    LED <= 16'hFFFF;
+                    if(second_counter[27]) begin
+                        second_counter[27] <= 1'b0;
+                        if(game_timer_S_one == 4'd0 && game_timer_S_ten > 4'd0) begin
+                            game_timer_S_ten = game_timer_S_ten - 1;
+                            game_timer_S_one = 4'd10;
+                        end
+                        else if(game_timer_S_ten == 0 && game_timer_S_one == 0 && game_timer_M_one > 0) begin
+                            game_timer_M_one = game_timer_M_one - 1;
+                            game_timer_S_ten = 4'd5;
+                            game_timer_S_one = 4'd10;
+                        end
+                        if(!timeup) begin
+                            game_timer_S_one = game_timer_S_one - 4'd1;
+                        end
+                    end
+                end
+                else begin
+                    if(is_chess_move) begin
+                        game_timer_S_one = game_timer_S_one + 4'd5;
+                        if(game_timer_S_one >= 4'd10) begin
+                            game_timer_S_one = game_timer_S_one - 4'd10;
+                            game_timer_S_ten = game_timer_S_ten + 4'd1;
+                        end
+                        if(game_timer_S_ten >= 4'd6) begin
+                            game_timer_S_ten = 4'd0;
+                            game_timer_M_one = game_timer_M_one + 4'd1;
+                        end
+                    end
+                    LED <= 16'h0000;
+                end
+            end
+            FINISH: begin
+                if(win[player_selected] == 1'b1) begin
+                    LED <= flash;
+                    game_timer_M_ten <= 4'd10;
+                    game_timer_M_one <= 4'd1;
+                    game_timer_S_ten <= 4'd11;
+                    game_timer_S_one <= 4'd14;
+                end
+                else begin
+                    LED <= 16'h0000;
+                    game_timer_M_ten <= 4'd12;
+                    game_timer_M_one <= 4'd0;
+                    game_timer_S_ten <= 4'd5;
+                    game_timer_S_one <= 4'd13;
+                end
+            end
+            default: begin
+                game_timer_M_ten <= game_timer_M_ten;
+                game_timer_M_one <= game_timer_M_one;
+                game_timer_S_ten <= game_timer_S_ten;
+                game_timer_S_one <= game_timer_S_one;
+            end
+        endcase
     end
 
 endmodule
