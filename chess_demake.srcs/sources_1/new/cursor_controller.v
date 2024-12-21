@@ -7,6 +7,7 @@ module cursor_controller(
     inout wire PS2_CLK,
     inout wire PS2_DATA,
     input wire [1:0] state,
+    input wire move_valid,
     output reg [0:0] player, //0 -> white, 1 -> black
     output reg [5:0] cursor,
     output reg [5:0] pre_cursor,
@@ -44,6 +45,7 @@ module cursor_controller(
     wire key_valid;
     reg [0:0] pre_key;
     reg [0:0] mode;
+    reg move_valid;
 
 
     KeyboardDecoder kd1 (
@@ -105,14 +107,16 @@ module cursor_controller(
                         hold_position <= cursor;
                     end
                     else if (mode == HOLD) begin
-                        if (cursor != hold_position) begin
-                            player <= ~player;
+                        if(cursor == hold_position || ((info == 49 || info == 51 || (info[2] == 1 && player == BLACK) || (info[2] == 0 && player == WHITE)) && move_valid)) begin
+                            if (cursor != hold_position) begin
+                                player <= ~player;
+                            end
+                            mode <= UNHOLD;
+                            is_hold <= 0;
+                            is_chess_move <= 1;
+                            pre_position <= hold_position;
+                            position <= cursor;
                         end
-                        mode <= UNHOLD;
-                        is_hold <= 0;
-                        is_chess_move <= 1;
-                        pre_position <= hold_position;
-                        position <= cursor;
                     end
                     else begin
                         mode <= UNHOLD;

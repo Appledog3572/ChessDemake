@@ -9,6 +9,7 @@ module chess_top_master(
     inout wire PS2_DATA,
     input wire player_select,
     input wire timeup_input,
+    input wire debug_mode,
     output wire [3:0] vgaRed,
     output wire [3:0] vgaGreen,
     output wire [3:0] vgaBlue,
@@ -74,6 +75,7 @@ module chess_top_master(
     wire [5:0] info = board[(h_cnt-80)/60 + 8*(v_cnt/60)];
     wire timeup = ({game_timer_M_ten, game_timer_M_one, game_timer_S_ten, game_timer_S_one} == 16'h0000)? 1'b1 : 1'b0;
     reg player_selected;
+    reg move_valid;
     integer game_timer_m, game_timer_s;
     
     // SevenSegment
@@ -126,6 +128,7 @@ module chess_top_master(
         .PS2_CLK(PS2_CLK),
         .PS2_DATA(PS2_DATA),
         .state(state),
+        .move_valid(move_valid),
         .player(player),
         .cursor(cursor),
         .pre_cursor(pre_cursor),
@@ -310,7 +313,7 @@ module chess_top_master(
             GAME: begin
                 second_counter <= second_counter + 1'b1;
                 if(player == player_selected) begin
-                    LED <= 16'hFFFF;
+                    LED <= (debug_mode == 1'b1)? ((move_valid == 1'b1)? 16'hFFFF : 16'h0000) :16'hFFFF;
                     if(second_counter[27]) begin
                         second_counter[27] <= 1'b0;
                         if(game_timer_S_one == 4'd0 && game_timer_S_ten > 4'd0) begin
@@ -363,6 +366,60 @@ module chess_top_master(
                 game_timer_M_one <= game_timer_M_one;
                 game_timer_S_ten <= game_timer_S_ten;
                 game_timer_S_one <= game_timer_S_one;
+            end
+        endcase
+    end
+
+    wire [2:0] cursor_x = cursor % 8;
+    wire [2:0] cursor_y = cursor / 8;
+    wire [2:0] hold_position_x = hold_position%8;
+    wire [2:0] hold_position_y = hold_position/8;
+    always @(posedge clk) begin
+        case(board[hold_position] & 6'b111_000)
+            6'b000_000: begin //pawn
+                move_valid = 1'b1;
+            end
+            6'b001_000: begin // knight
+                if(cursor != hold_position) begin
+                    if(((cursor_y - 1) == hold_position_y) && (((cursor_x + 2) == hold_position_x)||((cursor_x - 2) == hold_position_x))) begin
+                        move_valid = 1'b1;
+                    end
+                    else if(((cursor_y + 1) == hold_position_y) && (((cursor_x + 2) == hold_position_x)||((cursor_x - 2) == hold_position_x))) begin
+                        move_valid = 1'b1;
+                    end
+                    else if(((cursor_x - 1) == hold_position_x) && (((cursor_y + 2) == hold_position_y)||((cursor_y - 2) == hold_position_y))) begin
+                        move_valid = 1'b1;
+                    end
+                    else if(((cursor_x + 1) == hold_position_x) && (((cursor_y + 2) == hold_position_y)||((cursor_y - 2) == hold_position_y))) begin
+                        move_valid = 1'b1;
+                    end
+                    else begin
+                        move_valid = 1'b0;
+                    end
+                end
+                else begin
+                    move_valid = 1'b0;
+                end
+            end
+            6'b010_000: begin //bishop
+                move_valid = 1'b1;
+            end
+            6'b011_000: begin //rook
+                if(cursor != hold_position && (hold_position/8 == cursor/8) || (hold_position%8 == cursor%8)) begin
+                    move_valid = 1'b1;
+                end
+                else begin
+                    move_valid = 1'b0;
+                end
+            end
+            6'b100_000: begin //queen
+                move_valid = 1'b1;
+            end
+            6'b101_000: begin //king
+                move_valid = 1'b1;
+            end
+            default: begin
+
             end
         endcase
     end
