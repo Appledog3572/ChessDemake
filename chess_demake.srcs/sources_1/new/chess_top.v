@@ -374,6 +374,7 @@ module chess_top_master(
     wire [2:0] cursor_y = cursor / 8;
     wire [2:0] hold_position_x = hold_position%8;
     wire [2:0] hold_position_y = hold_position/8;
+    integer j;
     always @(posedge clk) begin
         case(board[hold_position] & 6'b111_000)
             6'b000_000: begin //pawn
@@ -416,16 +417,16 @@ module chess_top_master(
             end
             6'b001_000: begin // knight
                 if(cursor != hold_position) begin
-                    if(((cursor_y - 1) == hold_position_y) && (((cursor_x + 2) == hold_position_x)||((cursor_x - 2) == hold_position_x))) begin
+                    if(((cursor_y - 1) == hold_position_y) && (((cursor_x + 2) == hold_position_x) || ((cursor_x - 2) == hold_position_x))) begin
                         move_valid = 1'b1;
                     end
-                    else if(((cursor_y + 1) == hold_position_y) && (((cursor_x + 2) == hold_position_x)||((cursor_x - 2) == hold_position_x))) begin
+                    else if(((cursor_y + 1) == hold_position_y) && (((cursor_x + 2) == hold_position_x) || ((cursor_x - 2) == hold_position_x))) begin
                         move_valid = 1'b1;
                     end
-                    else if(((cursor_x - 1) == hold_position_x) && (((cursor_y + 2) == hold_position_y)||((cursor_y - 2) == hold_position_y))) begin
+                    else if(((cursor_x - 1) == hold_position_x) && (((cursor_y + 2) == hold_position_y) || ((cursor_y - 2) == hold_position_y))) begin
                         move_valid = 1'b1;
                     end
-                    else if(((cursor_x + 1) == hold_position_x) && (((cursor_y + 2) == hold_position_y)||((cursor_y - 2) == hold_position_y))) begin
+                    else if(((cursor_x + 1) == hold_position_x) && (((cursor_y + 2) == hold_position_y) || ((cursor_y - 2) == hold_position_y))) begin
                         move_valid = 1'b1;
                     end
                     else begin
@@ -440,8 +441,40 @@ module chess_top_master(
                 move_valid = 1'b1;
             end
             6'b011_000: begin //rook
-                if(cursor != hold_position && (hold_position/8 == cursor/8) || (hold_position%8 == cursor%8)) begin
-                    move_valid = 1'b1;
+                if((cursor != hold_position) && ((hold_position/8 == cursor/8) || (hold_position%8 == cursor%8))) begin
+                    move_valid <= 1;
+                    if (cursor_x > hold_position_x) begin
+                        for (j = 1;j < 7;j = j + 1) begin
+                            if ((hold_position_x + j) < cursor_x) begin
+                                if ((board[hold_position + j] != 48) && (board[hold_position + j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                    else if (cursor_x < hold_position_x) begin
+                        for (j = 1;j < 7;j = j + 1) begin
+                            if ((cursor_x + j) < hold_position_x) begin
+                                if ((board[cursor + j] != 48) && (board[cursor + j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                    else if (cursor_y > hold_position_y) begin
+                        for (j = 1;j < 7;j = j + 1) begin
+                            if ((hold_position_y + j) < cursor_y) begin
+                                if ((board[hold_position + 8*j] != 48) && (board[hold_position + 8*j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                    else if (cursor_y < hold_position_y) begin
+                        for (j = 1;j < 7;j = j + 1) begin
+                            if ((cursor_y + j) < hold_position_y) begin
+                                if ((board[cursor + 8*j] != 48) && (board[cursor + 8*j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
                 end
                 else begin
                     move_valid = 1'b0;
