@@ -26,15 +26,17 @@ module cursor_controller(
     parameter [0:0] BLACK = 1'b1;
 
     parameter [8:0] ENTER_CODE = 9'b0_0101_1010;
+    parameter [8:0] RIGHT_ENTER_CODE = 9'b1_0101_1010;
+    parameter [8:0] SPACE_CODE = 9'b0_0010_1001;
     parameter [8:0] KEY_CODES [0:7] = {
         9'b0_0001_1101, // W => 1D
         9'b0_0001_1100, // A => 1C
         9'b0_0001_1011, // S => 1B
         9'b0_0010_0011, // D => 23
-        9'b0_0111_0011, // UP => 73
-        9'b0_0110_1001, // LEFT => 69
+        9'b0_0111_0101, // UP => 75
+        9'b0_0110_1011, // LEFT => 6B
         9'b0_0111_0010, // DOWN => 72
-        9'b0_0111_1010 // RIGHT => 7A
+        9'b1_0111_0100 // RIGHT => 74
     };
 
     parameter [0:0] HOLD = 1'b0;
@@ -98,7 +100,7 @@ module cursor_controller(
                     cursor <= cursor + 1;
                     pre_cursor <= cursor;
                 end
-                else if(key_down[last_change] && last_change == ENTER_CODE && pre_key == 0) begin //D
+                else if(key_down[last_change] && ((last_change == ENTER_CODE) || (last_change == RIGHT_ENTER_CODE) || (last_change == SPACE_CODE)) && pre_key == 0) begin //D
                     is_move <= 0;
                     if (mode == UNHOLD && info != 49 && info != 51 && ((info[2] == 0 && player == BLACK) || (info[2] == 1 && player == WHITE))) begin
                         mode <= HOLD;

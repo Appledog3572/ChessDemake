@@ -438,13 +438,65 @@ module chess_top_master(
                 end
             end
             6'b010_000: begin //bishop
-                move_valid = 1'b1;
+                if(cursor != hold_position) begin
+                    move_valid <= 1;
+                    if ((cursor_x > hold_position_x) && (cursor_y > hold_position_y)) begin
+                        if ((cursor - hold_position) % 9 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((hold_position + 9*j) < cursor) begin
+                                    if ((board[hold_position + 9*j] != 48) && (board[hold_position + 9*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x > hold_position_x) && (cursor_y < hold_position_y)) begin
+                        if ((hold_position - cursor) % 7 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((cursor + 7*j) < hold_position) begin
+                                    if ((board[cursor + 7*j] != 48) && (board[cursor + 7*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x < hold_position_x) && (cursor_y > hold_position_y)) begin
+                        if ((cursor - hold_position) % 7 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((hold_position + 7*j) < cursor) begin
+                                    if ((board[hold_position + 7*j] != 48) && (board[hold_position + 7*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x < hold_position_x) && (cursor_y < hold_position_y)) begin
+                        if ((hold_position - cursor) % 9 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((cursor + 9*j) < hold_position) begin
+                                    if ((board[cursor + 9*j] != 48) && (board[cursor + 9*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else begin
+                        move_valid <= 0;
+                    end
+                end
+                else begin
+                    move_valid = 1'b0;
+                end
             end
             6'b011_000: begin //rook
                 if((cursor != hold_position) && ((hold_position/8 == cursor/8) || (hold_position%8 == cursor%8))) begin
                     move_valid <= 1;
                     if (cursor_x > hold_position_x) begin
-                        for (j = 1;j < 7;j = j + 1) begin
+                        for (j = 1; j < 7; j = j+1) begin
                             if ((hold_position_x + j) < cursor_x) begin
                                 if ((board[hold_position + j] != 48) && (board[hold_position + j] != 50))
                                     move_valid <= 0;
@@ -452,7 +504,7 @@ module chess_top_master(
                         end
                     end
                     else if (cursor_x < hold_position_x) begin
-                        for (j = 1;j < 7;j = j + 1) begin
+                        for (j = 1; j < 7; j = j+1) begin
                             if ((cursor_x + j) < hold_position_x) begin
                                 if ((board[cursor + j] != 48) && (board[cursor + j] != 50))
                                     move_valid <= 0;
@@ -460,7 +512,7 @@ module chess_top_master(
                         end
                     end
                     else if (cursor_y > hold_position_y) begin
-                        for (j = 1;j < 7;j = j + 1) begin
+                        for (j = 1; j < 7; j = j+1) begin
                             if ((hold_position_y + j) < cursor_y) begin
                                 if ((board[hold_position + 8*j] != 48) && (board[hold_position + 8*j] != 50))
                                     move_valid <= 0;
@@ -468,7 +520,7 @@ module chess_top_master(
                         end
                     end
                     else if (cursor_y < hold_position_y) begin
-                        for (j = 1;j < 7;j = j + 1) begin
+                        for (j = 1; j < 7; j = j+1) begin
                             if ((cursor_y + j) < hold_position_y) begin
                                 if ((board[cursor + 8*j] != 48) && (board[cursor + 8*j] != 50))
                                     move_valid <= 0;
@@ -481,13 +533,114 @@ module chess_top_master(
                 end
             end
             6'b100_000: begin //queen
-                move_valid = 1'b1;
+                if(cursor != hold_position) begin
+                    move_valid <= 1;
+                    if ((cursor_x > hold_position_x) && (cursor_y > hold_position_y)) begin
+                        if ((cursor - hold_position) % 9 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((hold_position + 9*j) < cursor) begin
+                                    if ((board[hold_position + 9*j] != 48) && (board[hold_position + 9*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x > hold_position_x) && (cursor_y < hold_position_y)) begin
+                        if ((hold_position - cursor) % 7 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((cursor + 7*j) < hold_position) begin
+                                    if ((board[cursor + 7*j] != 48) && (board[cursor + 7*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x < hold_position_x) && (cursor_y > hold_position_y)) begin
+                        if ((cursor - hold_position) % 7 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((hold_position + 7*j) < cursor) begin
+                                    if ((board[hold_position + 7*j] != 48) && (board[hold_position + 7*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x < hold_position_x) && (cursor_y < hold_position_y)) begin
+                        if ((hold_position - cursor) % 9 == 0) begin
+                            for (j = 1;j < 7;j = j + 1) begin
+                                if ((cursor + 9*j) < hold_position) begin
+                                    if ((board[cursor + 9*j] != 48) && (board[cursor + 9*j] != 50))
+                                        move_valid <= 0;
+                                end
+                            end
+                        end
+                        else move_valid <= 0;
+                    end
+                    else if ((cursor_x > hold_position_x) && ((hold_position/8 == cursor/8) || (hold_position%8 == cursor%8))) begin
+                        for (j = 1; j < 7; j = j+1) begin
+                            if ((hold_position_x + j) < cursor_x) begin
+                                if ((board[hold_position + j] != 48) && (board[hold_position + j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                    else if ((cursor_x < hold_position_x) && ((hold_position/8 == cursor/8) || (hold_position%8 == cursor%8))) begin
+                        for (j = 1; j < 7; j = j+1) begin
+                            if ((cursor_x + j) < hold_position_x) begin
+                                if ((board[cursor + j] != 48) && (board[cursor + j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                    else if ((cursor_y > hold_position_y) && ((hold_position/8 == cursor/8) || (hold_position%8 == cursor%8))) begin
+                        for (j = 1; j < 7; j = j+1) begin
+                            if ((hold_position_y + j) < cursor_y) begin
+                                if ((board[hold_position + 8*j] != 48) && (board[hold_position + 8*j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                    else if ((cursor_y < hold_position_y) && ((hold_position/8 == cursor/8) || (hold_position%8 == cursor%8))) begin
+                        for (j = 1; j < 7; j = j+1) begin
+                            if ((cursor_y + j) < hold_position_y) begin
+                                if ((board[cursor + 8*j] != 48) && (board[cursor + 8*j] != 50))
+                                    move_valid <= 0;
+                            end
+                        end
+                    end
+                end
+                else begin
+                    move_valid = 1'b0;
+                end
             end
             6'b101_000: begin //king
-                move_valid = 1'b1;
+                if(cursor != hold_position) begin
+                    move_valid = 1'b0;
+                    if(cursor_x - 1 == hold_position_x) begin
+                        if((cursor_y - 1 == hold_position_y) || (cursor_y + 1 == hold_position_y) || (cursor_y == hold_position_y)) begin
+                            move_valid = 1'b1;
+                        end
+                    end
+                    else if(cursor_x + 1 == hold_position_x) begin
+                        if((cursor_y - 1 == hold_position_y) || (cursor_y + 1 == hold_position_y) || (cursor_y == hold_position_y)) begin
+                            move_valid = 1'b1;
+                        end
+                    end
+                    else if(cursor_x == hold_position_x) begin
+                        if((cursor_y - 1 == hold_position_y) || (cursor_y + 1 == hold_position_y)) begin
+                            move_valid = 1'b1;
+                        end
+                    end
+                end
+                else begin
+                    move_valid = 1'b0;
+                end
             end
             default: begin
-
+                move_valid = 1'b0;
             end
         endcase
     end
