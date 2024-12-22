@@ -334,11 +334,16 @@ module chess_top_master(
             end
             GAME: begin
                 second_counter <= second_counter + 1'b1;
-                if((white_checked && (player_selected == 0)) || (black_checked && (player_selected == 1))) begin
-                    LED <= checked_flash;
-                end
-                else if(player == player_selected) begin
-                    LED <= (debug_mode == 1'b1)? ({10'b0, white_king_position}) :16'hFFFF; //((move_valid == 1'b1)? 16'hFFFF : 16'h0000)
+                if(player == player_selected) begin
+                    if(debug_mode == 1'b1) begin
+                        LED <= {12'b0, bishop_white_check1, bishop_white_check2, bishop_white_check3, bishop_white_check4};
+                    end
+                    else if((white_checked && (player_selected == 0)) || (black_checked && (player_selected == 1))) begin
+                        LED <= checked_flash;
+                    end
+                    else begin
+                        LED <= 16'hFFFF;
+                    end
                     if(second_counter[27]) begin
                         second_counter[27] <= 1'b0;
                         if(game_timer_S_one == 4'd0 && game_timer_S_ten > 4'd0) begin
@@ -671,46 +676,219 @@ module chess_top_master(
     end
 
     // check detect
+    // white king checked
     wire [2:0] white_king_position_x = white_king_position%8;
     wire [2:0] white_king_position_y = white_king_position/8;
+    reg bishop_white_check1, bishop_white_check2, bishop_white_check3, bishop_white_check4;
+    reg bishop_white_block1, bishop_white_block2, bishop_white_block3, bishop_white_block4;
     always @(posedge clk) begin
         white_checked = 0;
-        if((white_king_position - 9 >= 0) && (((board[white_king_position - 7] & 6'b111_100) == 6'b000_000) || ((board[white_king_position - 9] & 6'b111_100) == 6'b000_000))) begin // pawn
+        // pawn
+        if((white_king_position >= 9) && (((board[white_king_position - 7] & 6'b111_100) == 6'b000_000) || ((board[white_king_position - 9] & 6'b111_100) == 6'b000_000))) begin
             white_checked = 1;
         end
-        else if((white_king_position - 17 >= 0) || (white_king_position + 17 <= 63)) begin // knight
-            if((white_king_position - 17 >= 0) && 
+        // knight
+        if((white_checked != 1'b1) && ((white_king_position >= 17) || (white_king_position <= (63-17)))) begin
+            if((white_king_position >= 17) && 
                 (((board[white_king_position - 15] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 17] & 6'b111_100) == 6'b001_000) ||
-                ((board[white_king_position - 06] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 10] & 6'b111_100) == 6'b001_000))
+                ((board[white_king_position - 6] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 10] & 6'b111_100) == 6'b001_000))
             ) begin
                 white_checked = 1;
             end
-            else if((white_king_position + 17 <= 63) && 
-                (((board[white_king_position + 06] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 10] & 6'b111_100) == 6'b001_000) ||
+            else if((white_king_position <= (63-17)) && 
+                (((board[white_king_position + 6] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 10] & 6'b111_100) == 6'b001_000) ||
                 ((board[white_king_position + 15] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 17] & 6'b111_100) == 6'b001_000))
             ) begin
                 white_checked = 1;
             end
         end
+        // bishop
+        if(white_checked != 1'b1) begin
+            bishop_white_check1 = 0;
+            bishop_white_block1 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_white_check1 == 0) && (bishop_white_block1 == 0)) && (white_king_position <= (63 - 9*j))) begin
+                    if ((board[white_king_position + 9*j] < 48) || (board[white_king_position + 9*j] > 51)) begin
+                        if(((board[white_king_position + 9*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position + 9*j] & 6'b111_100) == 6'b100_000)) begin
+                            bishop_white_check1 = 1;
+                        end
+                        else begin
+                            bishop_white_block1 = 1;
+                        end
+                    end
+                    else begin
+                        if(((white_king_position + 9*j)%8 == 7) || ((white_king_position + 9*j)/8 == 7)) begin
+                            bishop_white_block1 = 1;
+                        end
+                    end
+                end
+            end
+            bishop_white_check2 = 0;
+            bishop_white_block2 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_white_check2 == 0) && (bishop_white_block2 == 0)) && (white_king_position <= (63 - 7*j))) begin
+                    if ((board[white_king_position + 7*j] < 48) || (board[white_king_position + 7*j] > 51)) begin
+                        if(((board[white_king_position + 7*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position + 7*j] & 6'b111_100) == 6'b100_000)) begin
+                            bishop_white_check2 = 1;
+                        end
+                        else begin
+                            bishop_white_block2 = 1;
+                        end
+                    end
+                    else begin
+                        if(((white_king_position + 7*j)%8 == 0) || ((white_king_position + 7*j)/8 == 7)) begin
+                            bishop_white_block2 = 1;
+                        end
+                    end
+                end
+            end
+            bishop_white_check3 = 0;
+            bishop_white_block3 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_white_check3 == 0) && (bishop_white_block3 == 0)) && (white_king_position >= 7*j)) begin
+                    if ((board[white_king_position - 7*j] < 48) || (board[white_king_position - 7*j] > 51)) begin
+                        if(((board[white_king_position - 7*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position - 7*j] & 6'b111_100) == 6'b100_000)) begin
+                            bishop_white_check3 = 1;
+                        end
+                        else begin
+                            bishop_white_block3 = 1;
+                        end
+                    end
+                    else begin
+                        if(((white_king_position - 7*j)%8 == 7) || ((white_king_position - 7*j)/8 == 0)) begin
+                            bishop_white_block3 = 1;
+                        end
+                    end
+                end
+            end
+            bishop_white_check4 = 0;
+            bishop_white_block4 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_white_check4 == 0) && (bishop_white_block4 == 0)) && (white_king_position >= 9*j)) begin
+                    if ((board[white_king_position - 9*j] < 48) || (board[white_king_position - 9*j] > 51)) begin
+                        if(((board[white_king_position - 9*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position - 9*j] & 6'b111_100) == 6'b100_000)) begin
+                            bishop_white_check4 = 1;
+                        end
+                        else begin
+                            bishop_white_block4 = 1;
+                        end
+                    end
+                    else begin
+                        if(((white_king_position - 9*j)%8 == 0) || ((white_king_position - 9*j)/8 == 0)) begin
+                            bishop_white_block4 = 1;
+                        end
+                    end
+                end
+            end
+            white_checked = (bishop_white_check1 || bishop_white_check2 || bishop_white_check3 || bishop_white_check4);
+        end
     end
+
+    // black king checked
+    wire [2:0] black_king_position_x = black_king_position%8;
+    wire [2:0] black_king_position_y = black_king_position/8;
+    reg bishop_black_check1, bishop_black_check2, bishop_black_check3, bishop_black_check4;
+    reg bishop_black_block1, bishop_black_block2, bishop_black_block3, bishop_black_block4;
     always @(posedge clk) begin
         black_checked = 0;
-        if((black_king_position + 9 <= 63) && (((board[black_king_position + 7] & 6'b111_100) == 6'b000_100) || ((board[black_king_position + 9] & 6'b111_100) == 6'b000_100))) begin // pawn
+        // pawn
+        if((black_king_position <= (63-9)) && (((board[black_king_position + 7] & 6'b111_100) == 6'b000_100) || ((board[black_king_position + 9] & 6'b111_100) == 6'b000_100))) begin 
             black_checked = 1;
         end
-        else if((black_king_position - 17 >= 0) || (black_king_position + 17 <= 63)) begin // knight
-            if((black_king_position - 17 >= 0) && 
+        // knight
+        if((black_checked != 1'b1) && ((black_king_position >= 17) || (black_king_position <= 46))) begin 
+            if((black_king_position >= 17) && 
                 (((board[black_king_position - 15] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 17] & 6'b111_100) == 6'b001_100) ||
-                ((board[black_king_position - 06] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 10] & 6'b111_100) == 6'b001_100))
+                ((board[black_king_position - 6] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 10] & 6'b111_100) == 6'b001_100))
             ) begin
                 black_checked = 1;
             end
-            else if((black_king_position + 17 <= 63) &&
-                (((board[black_king_position + 06] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 10] & 6'b111_100) == 6'b001_100) ||
+            else if((black_king_position <= (63-17)) &&
+                (((board[black_king_position + 6] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 10] & 6'b111_100) == 6'b001_100) ||
                 ((board[black_king_position + 15] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 17] & 6'b111_100) == 6'b001_100))
             ) begin
                 black_checked = 1;
             end
+        end
+        // bishop
+        if(black_checked != 1'b1) begin
+            bishop_black_check1 = 0;
+            bishop_black_block1 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_black_check1 == 0) && (bishop_black_block1 == 0)) && (black_king_position <= (63 - 9*j))) begin
+                    if ((board[black_king_position + 9*j] < 48) || (board[black_king_position + 9*j] > 51)) begin
+                        if(((board[black_king_position + 9*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position + 9*j] & 6'b111_100) == 6'b100_100)) begin
+                            bishop_black_check1 = 1;
+                        end
+                        else begin
+                            bishop_black_block1 = 1;
+                        end
+                    end
+                    else begin
+                        if(((black_king_position + 9*j)%8 == 7) || ((black_king_position + 9*j)/8 == 7)) begin
+                            bishop_black_block1 = 1;
+                        end
+                    end
+                end
+            end
+            bishop_black_check2 = 0;
+            bishop_black_block2 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_black_check2 == 0) && (bishop_black_block2 == 0)) && (black_king_position <= (63 - 7*j))) begin
+                    if ((board[black_king_position + 7*j] < 48) || (board[black_king_position + 7*j] > 51)) begin
+                        if(((board[black_king_position + 7*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position + 7*j] & 6'b111_100) == 6'b100_100)) begin
+                            bishop_black_check2 = 1;
+                        end
+                        else begin
+                            bishop_black_block2 = 1;
+                        end
+                    end
+                    else begin
+                        if(((black_king_position + 7*j)%8 == 0) || ((black_king_position + 7*j)/8 == 7)) begin
+                            bishop_black_block2 = 1;
+                        end
+                    end
+                end
+            end
+            bishop_black_check3 = 0;
+            bishop_black_block3 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_black_check3 == 0) && (bishop_black_block3 == 0)) && (black_king_position >= 7*j)) begin
+                    if ((board[black_king_position - 7*j] < 48) || (board[black_king_position - 7*j] > 51)) begin
+                        if(((board[black_king_position - 7*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position - 7*j] & 6'b111_100) == 6'b100_100)) begin
+                            bishop_black_check3 = 1;
+                        end
+                        else begin
+                            bishop_black_block3 = 1;
+                        end
+                    end
+                    else begin
+                        if(((black_king_position - 7*j)%8 == 7) || ((black_king_position - 7*j)/8 == 0)) begin
+                            bishop_black_block3 = 1;
+                        end
+                    end
+                end
+            end
+            bishop_black_check4 = 0;
+            bishop_black_block4 = 0;
+            for (j = 1; j < 7; j = j + 1) begin
+                if (((bishop_black_check4 == 0) && (bishop_black_block4 == 0)) && (black_king_position >= 9*j)) begin
+                    if ((board[black_king_position - 9*j] < 48) || (board[black_king_position - 9*j] > 51)) begin
+                        if(((board[black_king_position - 9*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position - 9*j] & 6'b111_100) == 6'b100_100)) begin
+                            bishop_black_check4 = 1;
+                        end
+                        else begin
+                            bishop_black_block4 = 1;
+                        end
+                    end
+                    else begin
+                        if(((black_king_position - 9*j)%8 == 0) || ((black_king_position - 9*j)/8 == 0)) begin
+                            bishop_black_block4 = 1;
+                        end
+                    end
+                end
+            end
+            black_checked = (bishop_black_check1 || bishop_black_check2 || bishop_black_check3 || bishop_black_check4);
         end
     end
 
