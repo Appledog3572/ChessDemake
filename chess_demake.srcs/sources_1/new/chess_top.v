@@ -38,7 +38,8 @@ module chess_top_master(
     assign debug = state;
 
     // LED
-    reg [15:0] flash;
+    reg [15:0] win_flash;
+    reg [15:0] checked_flash;
 
     // keyboard
     wire [511:0] key_down;
@@ -60,6 +61,8 @@ module chess_top_master(
 
     // game
     reg [1:0] has_king;
+    reg [5:0] white_king_position;
+    reg [5:0] black_king_position;
     reg [5:0] board [0:63];
     reg [5:0] board_read_only [0:63] = {
         26, 08, 18, 32, 42, 16, 10, 24,
@@ -75,6 +78,8 @@ module chess_top_master(
     wire [5:0] info = board[(h_cnt-80)/60 + 8*(v_cnt/60)];
     wire timeup = ({game_timer_M_ten, game_timer_M_one, game_timer_S_ten, game_timer_S_one} == 16'h0000)? 1'b1 : 1'b0;
     reg player_selected;
+    reg white_checked;
+    reg black_checked;
     reg move_valid;
     integer game_timer_m, game_timer_s;
     
@@ -88,6 +93,7 @@ module chess_top_master(
     clock_divider #(.n(2)) m2(.clk(clk), .clk_div(clk_25MHz));
     clock_divider #(.n(15)) m15(.clk(clk), .clk_div(clk_div_15));
     clock_divider #(.n(22)) m22(.clk(clk), .clk_div(clk_div_22));
+    clock_divider #(.n(25)) m25(.clk(clk), .clk_div(clk_div_25));
     clock_divider #(.n(26)) m26(.clk(clk), .clk_div(clk_div_26));
     clock_divider #(.n(27)) m27(.clk(clk), .clk_div(clk_div_27));
     debounce db1(.pb_debounced(start_db), .pb(start), .clk(clk_div_15));
@@ -192,10 +198,18 @@ module chess_top_master(
     // flash
     always @(posedge clk_div_26) begin
         if(state == INIT) begin
-            flash <= 16'hFFFF;
+            win_flash <= 16'b1010_1010_1010_1010;
         end
         else if(state == FINISH) begin
-            flash <= ~flash;
+            win_flash <= ~win_flash;
+        end
+    end
+    always @(posedge clk_div_25) begin
+        if(state == INIT) begin
+            checked_flash <= 16'hFFFF;
+        end
+        else if(state == GAME) begin
+            checked_flash <= ~checked_flash;
         end
     end
 
@@ -232,6 +246,8 @@ module chess_top_master(
                     init <= 1'b1;
                     i <= 0;
                     has_king <= 2'b11;
+                    black_king_position <= 6'd4;
+                    white_king_position <= 6'd60;
                     reset_output <= 1'b1;
                 end
                 else begin
@@ -267,6 +283,12 @@ module chess_top_master(
                 else if(is_chess_move) begin
                     hold_cnt <= 0;
                     if(cursor != hold_position) begin
+                        if((player_selected == 0) && ((board[hold_position] & 6'b111_100) == 6'b101_100)) begin // white king move
+                            white_king_position <= cursor;
+                        end
+                        else if((player_selected == 1) && ((board[hold_position] & 6'b111_100) == 6'b101_000)) begin // black king move
+                            black_king_position <= cursor;
+                        end
                         if(board[cursor] >= 40 && board[cursor] <= 47) begin
                             if(board[cursor] <= 43) begin
                                 has_king[1] <= 1'b0;
@@ -278,7 +300,7 @@ module chess_top_master(
                         if((board[cursor] & 6'b000_010) == 6'b000_000) begin // green tile
                             board[cursor] <= (board[hold_position] & 6'b111_101);
                         end
-                        else begin
+                        else begin // white tile
                             board[cursor] <= (board[hold_position] | 6'b000_010);
                         end
                         chess_move_cnt <= 1;
@@ -312,8 +334,11 @@ module chess_top_master(
             end
             GAME: begin
                 second_counter <= second_counter + 1'b1;
-                if(player == player_selected) begin
-                    LED <= (debug_mode == 1'b1)? ((move_valid == 1'b1)? 16'hFFFF : 16'h0000) :16'hFFFF;
+                if((white_checked && (player_selected == 0)) || (black_checked && (player_selected == 1))) begin
+                    LED <= checked_flash;
+                end
+                else if(player == player_selected) begin
+                    LED <= (debug_mode == 1'b1)? ({10'b0, white_king_position}) :16'hFFFF; //((move_valid == 1'b1)? 16'hFFFF : 16'h0000)
                     if(second_counter[27]) begin
                         second_counter[27] <= 1'b0;
                         if(game_timer_S_one == 4'd0 && game_timer_S_ten > 4'd0) begin
@@ -347,7 +372,7 @@ module chess_top_master(
             end
             FINISH: begin
                 if(win[player_selected] == 1'b1) begin
-                    LED <= flash;
+                    LED <= win_flash;
                     game_timer_M_ten <= 4'd10;
                     game_timer_M_one <= 4'd1;
                     game_timer_S_ten <= 4'd11;
@@ -643,6 +668,50 @@ module chess_top_master(
                 move_valid = 1'b0;
             end
         endcase
+    end
+
+    // check detect
+    wire [2:0] white_king_position_x = white_king_position%8;
+    wire [2:0] white_king_position_y = white_king_position/8;
+    always @(posedge clk) begin
+        white_checked = 0;
+        if((white_king_position - 9 >= 0) && (((board[white_king_position - 7] & 6'b111_100) == 6'b000_000) || ((board[white_king_position - 9] & 6'b111_100) == 6'b000_000))) begin // pawn
+            white_checked = 1;
+        end
+        else if((white_king_position - 17 >= 0) || (white_king_position + 17 <= 63)) begin // knight
+            if((white_king_position - 17 >= 0) && 
+                (((board[white_king_position - 15] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 17] & 6'b111_100) == 6'b001_000) ||
+                ((board[white_king_position - 06] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 10] & 6'b111_100) == 6'b001_000))
+            ) begin
+                white_checked = 1;
+            end
+            else if((white_king_position + 17 <= 63) && 
+                (((board[white_king_position + 06] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 10] & 6'b111_100) == 6'b001_000) ||
+                ((board[white_king_position + 15] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 17] & 6'b111_100) == 6'b001_000))
+            ) begin
+                white_checked = 1;
+            end
+        end
+    end
+    always @(posedge clk) begin
+        black_checked = 0;
+        if((black_king_position + 9 <= 63) && (((board[black_king_position + 7] & 6'b111_100) == 6'b000_100) || ((board[black_king_position + 9] & 6'b111_100) == 6'b000_100))) begin // pawn
+            black_checked = 1;
+        end
+        else if((black_king_position - 17 >= 0) || (black_king_position + 17 <= 63)) begin // knight
+            if((black_king_position - 17 >= 0) && 
+                (((board[black_king_position - 15] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 17] & 6'b111_100) == 6'b001_100) ||
+                ((board[black_king_position - 06] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 10] & 6'b111_100) == 6'b001_100))
+            ) begin
+                black_checked = 1;
+            end
+            else if((black_king_position + 17 <= 63) &&
+                (((board[black_king_position + 06] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 10] & 6'b111_100) == 6'b001_100) ||
+                ((board[black_king_position + 15] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 17] & 6'b111_100) == 6'b001_100))
+            ) begin
+                black_checked = 1;
+            end
+        end
     end
 
 endmodule
