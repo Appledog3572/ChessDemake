@@ -7,6 +7,7 @@
 `define g3  32'd196
 `define a3  32'd220
 `define b3  32'd247
+
 module chess_top_master(
     input wire clk,
     input wire rst,
@@ -26,9 +27,9 @@ module chess_top_master(
     output wire [6:0] DISPLAY,
     output wire [3:0] DIGIT,
     output wire player,
-    output wire player_output,
+    output reg player_output,
     output reg reset_output,
-    output wire start_output,
+    output reg [1:0] LED_signal_output,
     output reg [1:0] win, // 0->p1 1->p2
     output wire audio_mclk, // master clock
     output wire audio_lrck, // left-right clock
@@ -36,22 +37,43 @@ module chess_top_master(
     output wire audio_sdin // serial audio data input
 );
 
+    // state
+    reg [2:0] state, next_state;
     parameter [2:0] INIT = 3'b000;
     parameter [2:0] GAME = 3'b001;
     parameter [2:0] PAUSE = 3'b010;
     parameter [2:0] FINISH = 3'b011;
     parameter [2:0] PROMOTION = 3'b100;
     
-    assign start_output = (state == GAME)? 1'b1 : 1'b0;
-    assign player_output = player_select;
-    
-    // state
-    reg [2:0] state, next_state;
-    assign debug = state;
+    always @(posedge clk) begin
+        case(state) 
+            INIT: begin
+                LED_signal_output <= 2'b00;
+                player_output <= player_select;
+            end
+            GAME: begin
+                player_output <= pause;
+                if(((player_selected == 1'b0) && black_checked) || ((player_selected == 1'b1) && white_checked)) begin
+                    LED_signal_output <= 2'b10;
+                end
+                else begin
+                    LED_signal_output <= 2'b01;
+                end
+            end
+            PROMOTION: begin
+                player_output <= 1'b1;
+                if(player == player_selected) begin
+                    LED_signal_output <= 2'b11;
+                end
+            end
+        endcase
+    end
 
     // LED
     reg [15:0] flash;
+    reg [15:0] win_flash;
     reg [15:0] checked_flash;
+    reg [23:0] promotion_flash;
 
     // keyboard
     wire [511:0] key_down;
@@ -77,14 +99,14 @@ module chess_top_master(
     reg [5:0] black_king_position;
     reg [5:0] board [0:63];
     reg [5:0] board_read_only [0:63] = {
-        26, 08, 18, 32, 42, 16, 10, 24,
-        00, 02, 00, 02, 00, 02, 00, 02,
-        50, 48, 50, 48, 50, 48, 50, 48, 
-        48, 50, 48, 50, 48, 50, 48, 50, 
-        50, 48, 50, 48, 50, 48, 50, 48, 
-        48, 50, 48, 50, 48, 50, 48, 50, 
-        06, 04, 06, 04, 06, 04, 06, 04,
-        28, 14, 20, 38, 44, 22, 12, 30
+        6'd26, 6'd08, 6'd18, 6'd32, 6'd42, 6'd16, 6'd10, 6'd24,
+        6'd00, 6'd02, 6'd00, 6'd02, 6'd00, 6'd02, 6'd00, 6'd02,
+        6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 
+        6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 
+        6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 
+        6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 6'd48, 6'd50, 
+        6'd06, 6'd04, 6'd06, 6'd04, 6'd06, 6'd04, 6'd06, 6'd04,
+        6'd28, 6'd14, 6'd20, 6'd38, 6'd44, 6'd22, 6'd12, 6'd30
     };
     wire [5:0] cursor, pre_cursor, position, pre_position, hold_position;
     wire [5:0] info = board[(h_cnt-80)/60 + 8*(v_cnt/60)];
@@ -115,6 +137,7 @@ module chess_top_master(
     clock_divider #(.n(2)) m2(.clk(clk), .clk_div(clk_25MHz));
     clock_divider #(.n(15)) m15(.clk(clk), .clk_div(clk_div_15));
     clock_divider #(.n(22)) m22(.clk(clk), .clk_div(clk_div_22));
+    clock_divider #(.n(23)) m23(.clk(clk), .clk_div(clk_div_23));
     clock_divider #(.n(25)) m25(.clk(clk), .clk_div(clk_div_25));
     clock_divider #(.n(26)) m26(.clk(clk), .clk_div(clk_div_26));
     clock_divider #(.n(27)) m27(.clk(clk), .clk_div(clk_div_27));
@@ -268,6 +291,14 @@ module chess_top_master(
             checked_flash <= ~checked_flash;
         end
     end
+    always @(posedge clk_div_23) begin
+        if(state != PROMOTION) begin
+            promotion_flash <= 24'b0000_0000000000000000_1111;
+        end
+        else begin
+            promotion_flash <= {promotion_flash[22:0], promotion_flash[23]};
+        end
+    end
 
     // player & win condition
     always @(posedge clk) begin
@@ -288,7 +319,7 @@ module chess_top_master(
     end
 
     // board control
-    reg [0:0] init;
+    reg init;
     integer i, move_cnt, chess_move_cnt, hold_cnt;
     always @(posedge clk) begin
         if(rst_op) begin
@@ -535,7 +566,6 @@ module chess_top_master(
 
     // timer
     reg [27:0] second_counter;
-    reg [26:0] flash_counter;
     always @(posedge clk) begin
         case(state)
             INIT: begin
@@ -587,6 +617,11 @@ module chess_top_master(
                         end
                     end
                     LED <= 16'h0000;
+                end
+            end
+            PROMOTION: begin
+                if(player != player_selected) begin
+                    LED <= promotion_flash[19:4];
                 end
             end
             FINISH: begin

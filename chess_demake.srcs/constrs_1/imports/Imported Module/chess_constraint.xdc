@@ -105,35 +105,6 @@ set_property IOSTANDARD LVCMOS33 [get_ports {LED[15]}]
     set_property IOSTANDARD LVCMOS33 [get_ports {DIGIT[2]}]
  set_property PACKAGE_PIN W4 [get_ports {DIGIT[3]}]
     set_property IOSTANDARD LVCMOS33 [get_ports {DIGIT[3]}]
-#===========================================
-# 7 segment display
-#  set_property PACKAGE_PIN W7 [get_ports {DISPLAY[0]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[0]}]
-#  set_property PACKAGE_PIN W6 [get_ports {DISPLAY[1]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[1]}]
-#  set_property PACKAGE_PIN U8 [get_ports {DISPLAY[2]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[2]}]
-#  set_property PACKAGE_PIN V8 [get_ports {DISPLAY[3]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[3]}]
-#  set_property PACKAGE_PIN U5 [get_ports {DISPLAY[4]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[4]}]
-#  set_property PACKAGE_PIN V5 [get_ports {DISPLAY[5]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[5]}]
-#  set_property PACKAGE_PIN U7 [get_ports {DISPLAY[6]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DISPLAY[6]}]
-
-# set_property PACKAGE_PIN V7 [get_ports dp]
-#    set_property IOSTANDARD LVCMOS33 [get_ports dp]
-#
-#  set_property PACKAGE_PIN U2 [get_ports {DIGIT[0]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DIGIT[0]}]
-#  set_property PACKAGE_PIN U4 [get_ports {DIGIT[1]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DIGIT[1]}]
-#  set_property PACKAGE_PIN V4 [get_ports {DIGIT[2]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DIGIT[2]}]
-#  set_property PACKAGE_PIN W4 [get_ports {DIGIT[3]}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {DIGIT[3]}]
-#=============================================
 
 
 # Buttons
@@ -149,20 +120,19 @@ set_property PACKAGE_PIN T18 [get_ports start]
 #    set_property IOSTANDARD LVCMOS33 [get_ports btn_down]
 
 
-
 ## Pmod Header JA
 ## Sch name = JA1
-#  set_property PACKAGE_PIN J1 [get_ports {IN1}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {IN1}]
+ set_property PACKAGE_PIN J1 [get_ports {audio_mclk}]
+    set_property IOSTANDARD LVCMOS33 [get_ports {audio_mclk}]
 ## Sch name = JA2
-#  set_property PACKAGE_PIN L2 [get_ports {IN2}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {IN2}]
+ set_property PACKAGE_PIN L2 [get_ports {audio_lrck}]
+    set_property IOSTANDARD LVCMOS33 [get_ports {audio_lrck}]
 ## Sch name = JA3
-#  set_property PACKAGE_PIN J2 [get_ports {IN3}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {IN3}]
+ set_property PACKAGE_PIN J2 [get_ports {audio_sck}]
+    set_property IOSTANDARD LVCMOS33 [get_ports {audio_sck}]
 ## Sch name = JA4
-#  set_property PACKAGE_PIN G2 [get_ports {IN4}]
-#     set_property IOSTANDARD LVCMOS33 [get_ports {IN4}]
+ set_property PACKAGE_PIN G2 [get_ports {audio_sdin}]
+    set_property IOSTANDARD LVCMOS33 [get_ports {audio_sdin}]
 ## Sch name = JA7
 #  set_property PACKAGE_PIN H1 [get_ports {left_pwm}]
 #     set_property IOSTANDARD LVCMOS33 [get_ports {left_pwm}]
@@ -189,8 +159,8 @@ set_property PACKAGE_PIN A16 [get_ports {player_output}]
 set_property PACKAGE_PIN B15 [get_ports {reset_output}]
    set_property IOSTANDARD LVCMOS33 [get_ports {reset_output}]
 ## Sch name = JB4
-set_property PACKAGE_PIN B16 [get_ports {start_output}]
-   set_property IOSTANDARD LVCMOS33 [get_ports {start_output}]
+set_property PACKAGE_PIN B16 [get_ports {LED_signal_output[0]}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {LED_signal_output[0]}]
 ## Sch name = JB7
 # set_property PACKAGE_PIN A15 [get_ports {motor_cw[0]}]
 #    set_property IOSTANDARD LVCMOS33 [get_ports {motor_cw[0]}]
@@ -217,8 +187,8 @@ set_property PACKAGE_PIN M18 [get_ports {win[0]}]
 set_property PACKAGE_PIN N17 [get_ports {win[1]}]
    set_property IOSTANDARD LVCMOS33 [get_ports {win[1]}]
 ## Sch name = JC4
-# set_property PACKAGE_PIN P18 [get_ports {JC[3]}]
-#    set_property IOSTANDARD LVCMOS33 [get_ports {JC[3]}]
+set_property PACKAGE_PIN P18 [get_ports {LED_signal_output[1]}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {LED_signal_output[1]}]
 ## Sch name = JC7
 # set_property PACKAGE_PIN L17 [get_ports {JC[4]}]
 #    set_property IOSTANDARD LVCMOS33 [get_ports {JC[4]}]
