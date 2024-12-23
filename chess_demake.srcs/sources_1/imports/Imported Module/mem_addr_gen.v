@@ -9,14 +9,15 @@ module mem_addr_gen(
     input [5:0] info,
     input [9:0] h_cnt,
     input [9:0] v_cnt,
-    input [1:0] state,
+    input [2:0] state,
     output reg [15:0] pixel_addr
 );
 
-    parameter [1:0] INIT = 2'b00;
-    parameter [1:0] GAME = 2'b01;
-    parameter [1:0] PAUSE = 2'b10;
-    parameter [1:0] FINISH = 2'b11;
+    parameter [2:0] INIT = 3'b000;
+    parameter [2:0] GAME = 3'b001;
+    parameter [2:0] PAUSE = 3'b010;
+    parameter [2:0] FINISH = 3'b011;
+    parameter [2:0] PROMOTION = 3'b100;
 
     wire [2:0] y = info[5:3];
     wire [2:0] x = info[2:0];

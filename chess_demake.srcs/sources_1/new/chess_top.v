@@ -1399,7 +1399,7 @@ module chess_top_master(
     reg [25:0] win_counter;
     reg [7:0] win_tag;
     reg [1:0] period;
-    reg [31:0] bell [0:215] = {
+    reg [31:0] bell [0:224] = {
         2*`e3, 2*`e3, 2*`e3, `silence,
         2*`e3, 2*`e3, 2*`e3, `silence,
         2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
@@ -1410,19 +1410,19 @@ module chess_top_master(
         2*`g3, 2*`g3, 2*`g3, `silence,
         2*`c3, 2*`c3, 2*`c3, `silence,
         2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
         2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
-        2*`f3, 2*`f3, 2*`f3, `silence,
-        2*`f3, 2*`f3, 2*`f3, `silence,
-        2*`f3, 2*`f3, 2*`f3, `silence,
-        2*`f3, 2*`f3, 2*`f3, `silence,
-        2*`f3, 2*`f3, 2*`f3, `silence,
-        2*`e3, 2*`e3, 2*`e3, `silence,
-        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
         2*`e3, 2*`e3, 2*`e3, `silence,
         2*`d3, 2*`d3, 2*`d3, `silence,
         2*`d3, 2*`d3, 2*`d3, `silence,
         2*`e3, 2*`e3, 2*`e3, `silence,
-        2*`d3, 2*`d3, 2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`d3, 2*`d3, 2*`d3, 2*`d3, 2*`d3, 2*`d3, `silence,
         2*`g3, 2*`g3, 2*`g3, 2*`g3, `silence,
         2*`e3, 2*`e3, 2*`e3, `silence,
         2*`e3, 2*`e3, 2*`e3, `silence,
@@ -1434,19 +1434,19 @@ module chess_top_master(
         2*`g3, 2*`g3, 2*`g3, `silence,
         2*`c3, 2*`c3, 2*`c3, `silence,
         2*`d3, 2*`d3, 2*`d3, `silence,
-        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
         2*`f3, 2*`f3, 2*`f3, `silence,
         2*`f3, 2*`f3, 2*`f3, `silence,
         2*`f3, 2*`f3, 2*`f3, `silence,
         2*`f3, 2*`f3, 2*`f3, `silence,
         2*`f3, 2*`f3, 2*`f3, `silence,
         2*`e3, 2*`e3, 2*`e3, `silence,
-        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
         2*`g3, 2*`g3, 2*`g3, `silence,
         2*`g3, 2*`g3, 2*`g3, `silence,
         2*`f3, 2*`f3, 2*`f3, `silence,
         2*`d3, 2*`d3, 2*`d3, `silence,
-        2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, `silence
+        2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, `silence
     };
     always @(posedge clk) begin
         if ((state == GAME) && (is_chess_move)) begin
@@ -1504,7 +1504,7 @@ module chess_top_master(
             if (win_counter[23] == 1) begin
                 win_counter <= 0;
                 win_tag <= win_tag + 1;
-                if (win_tag == 215)
+                if (win_tag == 224)
                      win_tag <= 0;
             end
             freqL <= bell[win_tag];
