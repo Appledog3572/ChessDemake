@@ -1,5 +1,12 @@
 `timescale 1ns / 1ps
-
+`define silence   32'd50000000
+`define c3  32'd131
+`define d3  32'd147
+`define e3  32'd165
+`define f3  32'd175
+`define g3  32'd196
+`define a3  32'd220
+`define b3  32'd247
 module chess_top_master(
     input wire clk,
     input wire rst,
@@ -22,23 +29,28 @@ module chess_top_master(
     output wire player_output,
     output reg reset_output,
     output wire start_output,
-    output reg [1:0] win // 0->p1 1->p2
+    output reg [1:0] win, // 0->p1 1->p2
+    output wire audio_mclk, // master clock
+    output wire audio_lrck, // left-right clock
+    output wire audio_sck,  // serial clock
+    output wire audio_sdin // serial audio data input
 );
 
-    parameter [1:0] INIT = 2'b00;
-    parameter [1:0] GAME = 2'b01;
-    parameter [1:0] PAUSE = 2'b10;
-    parameter [1:0] FINISH = 2'b11;
-
+    parameter [2:0] INIT = 3'b000;
+    parameter [2:0] GAME = 3'b001;
+    parameter [2:0] PAUSE = 3'b010;
+    parameter [2:0] FINISH = 3'b011;
+    parameter [2:0] PROMOTION = 3'b100;
+    
     assign start_output = (state == GAME)? 1'b1 : 1'b0;
     assign player_output = player_select;
-
+    
     // state
-    reg [1:0] state, next_state;
+    reg [2:0] state, next_state;
     assign debug = state;
 
     // LED
-    reg [15:0] win_flash;
+    reg [15:0] flash;
     reg [15:0] checked_flash;
 
     // keyboard
@@ -81,6 +93,8 @@ module chess_top_master(
     reg white_checked;
     reg black_checked;
     reg move_valid;
+    reg promotion_check;
+    wire [1:0] shift;
     integer game_timer_m, game_timer_s;
     
     // SevenSegment
@@ -90,6 +104,14 @@ module chess_top_master(
     reg [3:0] game_timer_S_one;
     wire [15:0] nums = {game_timer_M_ten, game_timer_M_one, game_timer_S_ten, game_timer_S_one};
 
+    // audio
+    wire [15:0] audio_in_left, audio_in_right;
+    reg [31:0] freqL, freqR;
+    wire [21:0] freq_outL, freq_outR;
+    assign freq_outL = 50000000 / freqL;
+    assign freq_outR = 50000000 / freqR;
+
+    // module
     clock_divider #(.n(2)) m2(.clk(clk), .clk_div(clk_25MHz));
     clock_divider #(.n(15)) m15(.clk(clk), .clk_div(clk_div_15));
     clock_divider #(.n(22)) m22(.clk(clk), .clk_div(clk_div_22));
@@ -101,7 +123,6 @@ module chess_top_master(
     debounce db2(.pb_debounced(rst_db), .pb(rst), .clk(clk_div_15));
     one_pulse op2(.clk(clk), .pb_in(rst_db), .pb_out(rst_op));
     SevenSegment SS(.display(DISPLAY), .digit(DIGIT), .nums(nums), .rst(rst_op), .clk(clk));
-
     vga_controller vga_inst(
         .pclk(clk_25MHz),
         .reset(rst_op),
@@ -143,8 +164,30 @@ module chess_top_master(
         .position(position),
         .is_chess_move(is_chess_move),
         .is_move(is_move),
-        .is_hold(is_hold)
+        .is_hold(is_hold),
+        .shift(shift)
     );
+    note_gen noteGen_00(
+      .clk(clk), 
+      .rst(rst), 
+      .volume(0),
+      .note_div_left(freq_outL), 
+      .note_div_right(freq_outR), 
+      .audio_left(audio_in_left),     // left sound audio
+      .audio_right(audio_in_right)    // right sound audio
+    );
+    // Speaker controller
+    speaker_control sc(
+        .clk(clk), 
+        .rst(rst), 
+        .audio_in_left(audio_in_left),      // left channel audio data input
+        .audio_in_right(audio_in_right),    // right channel audio data input
+        .audio_mclk(audio_mclk),            // master clock
+        .audio_lrck(audio_lrck),            // left-right clock
+        .audio_sck(audio_sck),              // serial clock
+        .audio_sdin(audio_sdin)             // serial audio data input
+    );
+
     always @(posedge clk, posedge rst_op) begin
         if(rst_op) begin
             state <= INIT;
@@ -168,11 +211,22 @@ module chess_top_master(
                 if(pause) begin
                     next_state = PAUSE;
                 end
+                else if (promotion_check) begin
+                    next_state = PROMOTION;
+                end
                 else if(has_king != 2'b11 || timeup || timeup_input) begin
                     next_state = FINISH;
                 end
                 else begin
                     next_state = state;
+                end
+            end
+            PROMOTION: begin
+                if (promotion_check == 0) begin
+                    next_state = GAME;
+                end
+                else begin 
+                    next_state = PROMOTION;
                 end
             end
             PAUSE: begin
@@ -191,7 +245,9 @@ module chess_top_master(
                     next_state = state;
                 end
             end
-            default: next_state = INIT;
+            default: begin 
+                next_state = INIT;
+            end
         endcase
     end
     
@@ -307,13 +363,171 @@ module chess_top_master(
                     end
                 end
                 else if(!is_move && chess_move_cnt == 1) begin
+                    if (((board[cursor] & 6'b111000) == 6'b000000) && ((cursor / 8 == 0) || (cursor / 8 == 7))) begin
+                        promotion_check <= 1;
+                    end
                     if((board[hold_position] & 6'b000_010) == 6'b000_000) begin //green tile
-                        board[hold_position] <= 6'b110_000;
+                        board[hold_position] = 6'b110_000;
                     end
                     else begin
                         board[hold_position] <= 6'b110_010;
                     end
                     chess_move_cnt <= 0;
+                end
+            end
+            else if (state == PROMOTION) begin
+                if (shift == 2'b10) begin
+                    if ((board[cursor] & 6'b000_010) == 6'b000_010) begin
+                        if ((board[cursor] & 6'b000_100) == 6'b000_100) begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b100_111;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b100_000) begin
+                                board[cursor] <= 6'b011_111;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b010_111;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b001_111;
+                            end
+                            else begin
+                                board[cursor] <= 6'b100_111;
+                            end
+                        end
+                        else begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b100_011;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b100_000) begin
+                                board[cursor] <= 6'b011_011;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b010_011;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b001_011;
+                            end
+                            else begin
+                                board[cursor] <= 6'b100_011;
+                            end
+                        end
+                    end
+                    else begin
+                        if ((board[cursor] & 6'b000_100) == 6'b000_100) begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b100_101;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b100_000) begin
+                                board[cursor] <= 6'b011_101;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b010_101;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b001_101;
+                            end
+                            else begin
+                                board[cursor] <= 6'b100_101;
+                            end
+                        end
+                        else begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b100_001;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b100_000) begin
+                                board[cursor] <= 6'b011_001;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b010_001;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b001_001;
+                            end
+                            else begin
+                                board[cursor] <= 6'b100_001;
+                            end
+                        end
+                    end
+                end
+                else if (shift == 2'b01) begin
+                    if ((board[cursor] & 6'b000_010) == 6'b000_010) begin
+                        if ((board[cursor] & 6'b000_100) == 6'b000_100) begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b001_111;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b001_000) begin
+                                board[cursor] <= 6'b010_111;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b011_111;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b100_111;
+                            end
+                            else begin
+                                board[cursor] <= 6'b001_111;
+                            end
+                        end
+                        else begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b001_011;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b001_000) begin
+                                board[cursor] <= 6'b010_011;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b011_011;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b100_011;
+                            end
+                            else begin
+                                board[cursor] <= 6'b001_011;
+                            end
+                        end
+                    end
+                    else begin
+                        if ((board[cursor] & 6'b000_100) == 6'b000_100) begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b001_101;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b001_000) begin
+                                board[cursor] <= 6'b010_101;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b011_101;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b100_101;
+                            end
+                            else begin
+                                board[cursor] <= 6'b001_101;
+                            end
+                        end
+                        else begin
+                            if ((board[cursor] & 6'b111_000) == 6'b000_000) begin
+                                board[cursor] <= 6'b001_001;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b001_000) begin
+                                board[cursor] <= 6'b010_001;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b010_000) begin
+                                board[cursor] <= 6'b011_001;
+                            end
+                            else if ((board[cursor] & 6'b111_000) == 6'b011_000) begin
+                                board[cursor] <= 6'b100_001;
+                            end
+                            else begin
+                                board[cursor] <= 6'b001_001;
+                            end
+                        end
+                    end
+                end
+                else if (shift == 2'b11) begin
+                    if ((board[cursor] & 6'b111_000) != 6'b000_000) begin
+                        promotion_check <= 0;
+                    end
                 end
             end
         end

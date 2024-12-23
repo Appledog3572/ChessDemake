@@ -6,9 +6,10 @@ module cursor_controller(
     input wire [5:0] info,
     inout wire PS2_CLK,
     inout wire PS2_DATA,
-    input wire [1:0] state,
+    input wire [2:0] state,
     input wire move_valid,
     output reg [0:0] player, //0 -> white, 1 -> black
+    output reg [1:0] shift,
     output reg [5:0] cursor,
     output reg [5:0] pre_cursor,
     output reg [5:0] hold_position,
@@ -18,10 +19,12 @@ module cursor_controller(
     output reg is_move,
     output reg is_hold
 );
-    parameter [1:0] INIT = 2'b00;
-    parameter [1:0] GAME = 2'b01;
-    parameter [1:0] PAUSE = 2'b10;
-    parameter [1:0] FINISH = 2'b11;
+    parameter [2:0] INIT = 3'b000;
+    parameter [2:0] GAME = 3'b001;
+    parameter [2:0] PAUSE = 3'b010;
+    parameter [2:0] FINISH = 3'b011;
+    parameter [2:0] PROMOTION = 3'b100;
+
     parameter [0:0] WHITE = 1'b0;
     parameter [0:0] BLACK = 1'b1;
 
@@ -131,6 +134,18 @@ module cursor_controller(
                     is_hold <= 0; 
                     is_chess_move <= 0;
                 end
+            end
+            PROMOTION: begin
+                if (key_down[last_change] && (last_change == KEY_CODES[1] || last_change == KEY_CODES[5]) && pre_key == 0) begin //A
+                    shift <= 2'b10;
+                end
+                else if (key_down[last_change] && (last_change == KEY_CODES[3] || last_change == KEY_CODES[7]) && pre_key == 0) begin //D
+                    shift <= 2'b01;
+                end
+                else if (key_down[last_change] && ((last_change == ENTER_CODE) || (last_change == RIGHT_ENTER_CODE) || (last_change == SPACE_CODE)) && pre_key == 0) begin
+                    shift <= 2'b11;
+                end
+                else shift <= 2'b00;
             end
         endcase
     end
