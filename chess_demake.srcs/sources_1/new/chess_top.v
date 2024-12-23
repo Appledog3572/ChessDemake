@@ -370,10 +370,10 @@ module chess_top_master(
                 else if(is_chess_move) begin
                     hold_cnt <= 0;
                     if(cursor != hold_position) begin
-                        if((player_selected == 0) && ((board[hold_position] & 6'b111_100) == 6'b101_100)) begin // white king move
+                        if(hold_position == white_king_position) begin // white king move
                             white_king_position <= cursor;
                         end
-                        else if((player_selected == 1) && ((board[hold_position] & 6'b111_100) == 6'b101_000)) begin // black king move
+                        else if(hold_position == black_king_position) begin // black king move
                             black_king_position <= cursor;
                         end
                         if(board[cursor] >= 40 && board[cursor] <= 47) begin
@@ -580,7 +580,7 @@ module chess_top_master(
                 second_counter <= second_counter + 1'b1;
                 if(player == player_selected) begin
                     if(debug_mode == 1'b1) begin
-                        LED <= {12'b0, bishop_white_check1, bishop_white_check2, bishop_white_check3, bishop_white_check4};
+                        LED <= {12'b0, bishop_white_check};
                     end
                     else if((white_checked && (player_selected == 0)) || (black_checked && (player_selected == 1))) begin
                         LED <= checked_flash;
@@ -928,217 +928,599 @@ module chess_top_master(
     // white king checked
     wire [2:0] white_king_position_x = white_king_position%8;
     wire [2:0] white_king_position_y = white_king_position/8;
-    reg bishop_white_check1, bishop_white_check2, bishop_white_check3, bishop_white_check4;
-    reg bishop_white_block1, bishop_white_block2, bishop_white_block3, bishop_white_block4;
+    reg [3:0] bishop_white_check, bishop_white_block;
+    reg [3:0] rook_white_check, rook_white_block;
     always @(posedge clk) begin
-        white_checked = 0;
+        white_checked = 1'b0;
         // pawn
-        if((white_king_position >= 9) && (((board[white_king_position - 7] & 6'b111_100) == 6'b000_000) || ((board[white_king_position - 9] & 6'b111_100) == 6'b000_000))) begin
-            white_checked = 1;
+        if(white_checked != 1'b1) begin
+            if(white_king_position_y >= 1) begin
+                if((white_king_position_x >= 1) && ((board[white_king_position - 9] & 6'b111_100) == 6'b000_000)) begin // 左上
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 6) && ((board[white_king_position - 7] & 6'b111_100) == 6'b000_000)) begin // 右上
+                    white_checked = 1'b1;
+                end
+            end
         end
         // knight
-        if((white_checked != 1'b1) && ((white_king_position >= 17) || (white_king_position <= (63-17)))) begin
-            if((white_king_position >= 17) && 
-                (((board[white_king_position - 15] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 17] & 6'b111_100) == 6'b001_000) ||
-                ((board[white_king_position - 6] & 6'b111_100) == 6'b001_000) || ((board[white_king_position - 10] & 6'b111_100) == 6'b001_000))
-            ) begin
-                white_checked = 1;
+        if(white_checked != 1'b1) begin 
+            if(white_king_position_y >= 2) begin // 上方兩列
+                if((white_king_position_x >= 1) && ((board[white_king_position - 17] & 6'b111_100) == 6'b001_000)) begin // 左上
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 6) && ((board[white_king_position - 15] & 6'b111_100) == 6'b001_000)) begin // 右上
+                    white_checked = 1'b1;
+                end
             end
-            else if((white_king_position <= (63-17)) && 
-                (((board[white_king_position + 6] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 10] & 6'b111_100) == 6'b001_000) ||
-                ((board[white_king_position + 15] & 6'b111_100) == 6'b001_000) || ((board[white_king_position + 17] & 6'b111_100) == 6'b001_000))
-            ) begin
-                white_checked = 1;
+            if(white_king_position_y >= 1) begin // 上方一列
+                if((white_king_position_x >= 2) && ((board[white_king_position - 10] & 6'b111_100) == 6'b001_000)) begin // 左上
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 5) && ((board[white_king_position - 06] & 6'b111_100) == 6'b001_000)) begin // 右上
+                    white_checked = 1'b1;
+                end
+            end
+            if(white_king_position_y <= 5) begin // 下方兩列
+                if((white_king_position_x >= 1) && ((board[white_king_position + 15] & 6'b111_100) == 6'b001_000)) begin // 左下
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 6) && ((board[white_king_position + 17] & 6'b111_100) == 6'b001_000)) begin // 右下
+                    white_checked = 1'b1;
+                end
+            end
+            if(white_king_position_y <= 6) begin // 下方一列
+                if((white_king_position_x >= 2) && ((board[white_king_position + 06] & 6'b111_100) == 6'b001_000)) begin // 左下
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 5) && ((board[white_king_position + 10] & 6'b111_100) == 6'b001_000)) begin // 右下
+                    white_checked = 1'b1;
+                end
             end
         end
         // bishop
         if(white_checked != 1'b1) begin
-            bishop_white_check1 = 0;
-            bishop_white_block1 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_white_check1 == 0) && (bishop_white_block1 == 0)) && (white_king_position <= (63 - 9*j))) begin
-                    if ((board[white_king_position + 9*j] < 48) || (board[white_king_position + 9*j] > 51)) begin
-                        if(((board[white_king_position + 9*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position + 9*j] & 6'b111_100) == 6'b100_000)) begin
-                            bishop_white_check1 = 1;
+            bishop_white_check = 4'b0000;
+            bishop_white_block = 4'b0000;
+            for (j = 1; j <= 7; j = j + 1) begin // 右下
+                if (((bishop_white_check[0] == 1'b0) && (bishop_white_block[0] == 1'b0)) && ((white_king_position_x <= (7 - j)) && (white_king_position_y <= (7 - j)))) begin //確認未被阻擋及未被將軍 且 執行邊界判定
+                    if ((board[white_king_position + 9*j] < 48) || (board[white_king_position + 9*j] > 51)) begin // 空格以外的棋子
+                        if(((board[white_king_position + 9*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position + 9*j] & 6'b111_100) == 6'b100_000)) begin // 是否為主教或皇后
+                            bishop_white_check[0] = 1'b1; // 被該主教或皇后將軍
                         end
-                        else begin
-                            bishop_white_block1 = 1;
+                        else begin // 不是主教或皇后表示有其他棋子阻擋
+                            bishop_white_block[0] = 1'b1;
                         end
                     end
-                    else begin
-                        if(((white_king_position + 9*j)%8 == 7) || ((white_king_position + 9*j)/8 == 7)) begin
-                            bishop_white_block1 = 1;
+                    else begin // 空格
+                        if((white_king_position_x == (7 - j)) || (white_king_position_y == (7 - j))) begin // 如果檢查到棋盤邊緣
+                            bishop_white_block[0] = 1'b1; // 設為被阻擋避免超出邊界
                         end
                     end
                 end
             end
-            bishop_white_check2 = 0;
-            bishop_white_block2 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_white_check2 == 0) && (bishop_white_block2 == 0)) && (white_king_position <= (63 - 7*j))) begin
+            for (j = 1; j <= 7; j = j + 1) begin // 左下
+                if (((bishop_white_check[1] == 1'b0) && (bishop_white_block[1] == 1'b0)) && ((white_king_position_x >= j) && (white_king_position_y <= (7 - j)))) begin
                     if ((board[white_king_position + 7*j] < 48) || (board[white_king_position + 7*j] > 51)) begin
                         if(((board[white_king_position + 7*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position + 7*j] & 6'b111_100) == 6'b100_000)) begin
-                            bishop_white_check2 = 1;
+                            bishop_white_check[1] = 1'b1;
                         end
                         else begin
-                            bishop_white_block2 = 1;
+                            bishop_white_block[1] = 1'b1;
                         end
                     end
                     else begin
-                        if(((white_king_position + 7*j)%8 == 0) || ((white_king_position + 7*j)/8 == 7)) begin
-                            bishop_white_block2 = 1;
+                        if((white_king_position_x == j) || (white_king_position_y == (7 - j))) begin
+                            bishop_white_block[1] = 1'b1;
                         end
                     end
                 end
             end
-            bishop_white_check3 = 0;
-            bishop_white_block3 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_white_check3 == 0) && (bishop_white_block3 == 0)) && (white_king_position >= 7*j)) begin
+            for (j = 1; j <= 7; j = j + 1) begin // 右上
+                if (((bishop_white_check[2] == 1'b0) && (bishop_white_block[2] == 1'b0)) && ((white_king_position_x <= (7 - j)) && (white_king_position_y >= j))) begin
                     if ((board[white_king_position - 7*j] < 48) || (board[white_king_position - 7*j] > 51)) begin
                         if(((board[white_king_position - 7*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position - 7*j] & 6'b111_100) == 6'b100_000)) begin
-                            bishop_white_check3 = 1;
+                            bishop_white_check[2] = 1'b1;
                         end
                         else begin
-                            bishop_white_block3 = 1;
+                            bishop_white_block[2] = 1'b1;
                         end
                     end
                     else begin
-                        if(((white_king_position - 7*j)%8 == 7) || ((white_king_position - 7*j)/8 == 0)) begin
-                            bishop_white_block3 = 1;
+                        if((white_king_position_x == (7 - j)) || (white_king_position_y == j)) begin
+                            bishop_white_block[2] = 1;
                         end
                     end
                 end
             end
-            bishop_white_check4 = 0;
-            bishop_white_block4 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_white_check4 == 0) && (bishop_white_block4 == 0)) && (white_king_position >= 9*j)) begin
+            for (j = 1; j <= 7; j = j + 1) begin // 左上
+                if (((bishop_white_check[3] == 1'b0) && (bishop_white_block[3] == 1'b0)) && ((white_king_position_x >= j) && (white_king_position_y >= j))) begin
                     if ((board[white_king_position - 9*j] < 48) || (board[white_king_position - 9*j] > 51)) begin
                         if(((board[white_king_position - 9*j] & 6'b111_100) == 6'b010_000) || ((board[white_king_position - 9*j] & 6'b111_100) == 6'b100_000)) begin
-                            bishop_white_check4 = 1;
+                            bishop_white_check[3] = 1'b1;
                         end
                         else begin
-                            bishop_white_block4 = 1;
+                            bishop_white_block[3] = 1'b1;
                         end
                     end
                     else begin
-                        if(((white_king_position - 9*j)%8 == 0) || ((white_king_position - 9*j)/8 == 0)) begin
-                            bishop_white_block4 = 1;
+                        if((white_king_position_x == j) || (white_king_position_y == j)) begin
+                            bishop_white_block[3] = 1'b1;
                         end
                     end
                 end
             end
-            white_checked = (bishop_white_check1 || bishop_white_check2 || bishop_white_check3 || bishop_white_check4);
+            white_checked = (bishop_white_check != 4'b0000)? 1'b1 : 1'b0;
+        end
+        // rook
+        if(white_checked != 1'b1) begin
+            rook_white_check = 4'b0000;
+            rook_white_block = 4'b0000;
+            for (j = 1; j <= 7; j = j + 1) begin // 下
+                if (((rook_white_check[0] == 1'b0) && (rook_white_block[0] == 1'b0)) && (white_king_position_y <= (7 - j))) begin
+                    if ((board[white_king_position + 8*j] < 48) || (board[white_king_position + 8*j] > 51)) begin
+                        if(((board[white_king_position + 8*j] & 6'b111_100) == 6'b011_000) || ((board[white_king_position + 8*j] & 6'b111_100) == 6'b100_000)) begin
+                            rook_white_check[0] = 1'b1;
+                        end
+                        else begin
+                            rook_white_block[0] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(white_king_position_y == (7 - j)) begin
+                            rook_white_block[0] = 1'b1;
+                        end
+                    end
+                end
+            end
+            for (j = 1; j <= 7; j = j + 1) begin // 上
+                if (((rook_white_check[1] == 1'b0) && (rook_white_block[1] == 1'b0)) && (white_king_position_y >= j)) begin
+                    if ((board[white_king_position - 8*j] < 48) || (board[white_king_position - 8*j] > 51)) begin
+                        if(((board[white_king_position - 8*j] & 6'b111_100) == 6'b011_000) || ((board[white_king_position - 8*j] & 6'b111_100) == 6'b100_000)) begin
+                            rook_white_check[1] = 1'b1;
+                        end
+                        else begin
+                            rook_white_block[1] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(white_king_position_y == j) begin
+                            rook_white_block[1] = 1'b1;
+                        end
+                    end
+                end
+            end
+            for (j = 1; j <= 7; j = j + 1) begin // 右
+                if (((rook_white_check[2] == 1'b0) && (rook_white_block[2] == 1'b0)) && (white_king_position_x <= (7 - j))) begin
+                    if ((board[white_king_position + j] < 48) || (board[white_king_position + j] > 51)) begin
+                        if(((board[white_king_position + j] & 6'b111_100) == 6'b011_000) || ((board[white_king_position + j] & 6'b111_100) == 6'b100_000)) begin
+                            rook_white_check[2] = 1'b1;
+                        end
+                        else begin
+                            rook_white_block[2] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(white_king_position_x == (7 - j)) begin
+                            rook_white_block[2] = 1'b1;
+                        end
+                    end
+                end
+            end
+            for (j = 1; j <= 7; j = j + 1) begin // 左
+                if (((rook_white_check[3] == 1'b0) && (rook_white_block[3] == 1'b0)) && (white_king_position_x >= j)) begin
+                    if ((board[white_king_position - j] < 48) || (board[white_king_position - j] > 51)) begin
+                        if(((board[white_king_position - j] & 6'b111_100) == 6'b011_000) || ((board[white_king_position - j] & 6'b111_100) == 6'b100_000)) begin
+                            rook_white_check[3] = 1'b1;
+                        end
+                        else begin
+                            rook_white_block[3] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(white_king_position_x == j) begin
+                            rook_white_block[3] = 1'b1;
+                        end
+                    end
+                end
+            end
+            white_checked = (rook_white_check != 4'b0000)? 1'b1 : 1'b0;
+        end
+        // king
+        if(white_checked != 1'b1) begin
+            if(white_king_position_y >= 1) begin // 上方
+                if((white_king_position_x >= 1) && ((board[white_king_position - 9] & 6'b111_100) == 6'b101_000)) begin // 左上
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 6) && ((board[white_king_position - 7] & 6'b111_100) == 6'b101_000)) begin // 右上
+                    white_checked = 1'b1;
+                end
+                if((board[white_king_position - 8] & 6'b111_100) == 6'b101_000) begin// 上
+                    white_checked = 1'b1;
+                end
+            end
+            if(white_king_position_y <= 6) begin // 下方
+                if((white_king_position_x >= 1) && ((board[white_king_position + 7] & 6'b111_100) == 6'b101_000)) begin // 左下
+                    white_checked = 1'b1;
+                end
+                if((white_king_position_x <= 6) && ((board[white_king_position + 9] & 6'b111_100) == 6'b101_000)) begin // 右下
+                    white_checked = 1'b1;
+                end
+                if((board[white_king_position + 8] & 6'b111_100) == 6'b101_000) begin// 下
+                    white_checked = 1'b1;
+                end
+            end
+            if((white_king_position_x >= 1) && ((board[white_king_position - 1] & 6'b111_100) == 6'b101_000)) begin // 左
+                white_checked = 1'b1;
+            end
+            if((white_king_position_x <= 6) && ((board[white_king_position + 1] & 6'b111_100) == 6'b101_000)) begin // 右
+                white_checked = 1'b1;
+            end
         end
     end
 
     // black king checked
     wire [2:0] black_king_position_x = black_king_position%8;
     wire [2:0] black_king_position_y = black_king_position/8;
-    reg bishop_black_check1, bishop_black_check2, bishop_black_check3, bishop_black_check4;
-    reg bishop_black_block1, bishop_black_block2, bishop_black_block3, bishop_black_block4;
+    reg [3:0] bishop_black_check, bishop_black_block;
+    reg [3:0] rook_black_check, rook_black_block;
     always @(posedge clk) begin
-        black_checked = 0;
+        black_checked = 1'b0;
         // pawn
-        if((black_king_position <= (63-9)) && (((board[black_king_position + 7] & 6'b111_100) == 6'b000_100) || ((board[black_king_position + 9] & 6'b111_100) == 6'b000_100))) begin 
-            black_checked = 1;
+        if(black_checked != 1'b1) begin
+            if(black_king_position_y <= 6) begin
+                if((black_king_position_x >= 1) && ((board[black_king_position + 7] & 6'b111_100) == 6'b000_100)) begin // 左下
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 6) && ((board[black_king_position + 9] & 6'b111_100) == 6'b000_100)) begin // 右下
+                    black_checked = 1'b1;
+                end
+            end
         end
         // knight
-        if((black_checked != 1'b1) && ((black_king_position >= 17) || (black_king_position <= 46))) begin 
-            if((black_king_position >= 17) && 
-                (((board[black_king_position - 15] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 17] & 6'b111_100) == 6'b001_100) ||
-                ((board[black_king_position - 6] & 6'b111_100) == 6'b001_100) || ((board[black_king_position - 10] & 6'b111_100) == 6'b001_100))
-            ) begin
-                black_checked = 1;
+        if(black_checked != 1'b1) begin 
+            if(black_king_position_y >= 2) begin // 上方兩列
+                if((black_king_position_x >= 1) && ((board[black_king_position - 17] & 6'b111_100) == 6'b001_100)) begin // 左上
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 6) && ((board[black_king_position - 15] & 6'b111_100) == 6'b001_100)) begin // 右上
+                    black_checked = 1'b1;
+                end
             end
-            else if((black_king_position <= (63-17)) &&
-                (((board[black_king_position + 6] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 10] & 6'b111_100) == 6'b001_100) ||
-                ((board[black_king_position + 15] & 6'b111_100) == 6'b001_100) || ((board[black_king_position + 17] & 6'b111_100) == 6'b001_100))
-            ) begin
-                black_checked = 1;
+            if(black_king_position_y >= 1) begin // 上方一列
+                if((black_king_position_x >= 2) && ((board[black_king_position - 10] & 6'b111_100) == 6'b001_100)) begin // 左上
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 5) && ((board[black_king_position - 06] & 6'b111_100) == 6'b001_100)) begin // 右上
+                    black_checked = 1'b1;
+                end
+            end
+            if(black_king_position_y <= 5) begin // 下方兩列
+                if((black_king_position_x >= 1) && ((board[black_king_position + 15] & 6'b111_100) == 6'b001_100)) begin // 左下
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 6) && ((board[black_king_position + 17] & 6'b111_100) == 6'b001_100)) begin // 右下
+                    black_checked = 1'b1;
+                end
+            end
+            if(black_king_position_y <= 6) begin // 下方一列
+                if((black_king_position_x >= 2) && ((board[black_king_position + 06] & 6'b111_100) == 6'b001_100)) begin // 左下
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 5) && ((board[black_king_position + 10] & 6'b111_100) == 6'b001_100)) begin // 右下
+                    black_checked = 1'b1;
+                end
             end
         end
         // bishop
         if(black_checked != 1'b1) begin
-            bishop_black_check1 = 0;
-            bishop_black_block1 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_black_check1 == 0) && (bishop_black_block1 == 0)) && (black_king_position <= (63 - 9*j))) begin
+            bishop_black_check = 4'b0000;
+            bishop_black_block = 4'b0000;
+            for (j = 1; j <= 7; j = j + 1) begin // 右下
+                if (((bishop_black_check[0] == 1'b0) && (bishop_black_block[0] == 1'b0)) && ((black_king_position_x <= (7 - j)) && (black_king_position_y <= (7 - j)))) begin
                     if ((board[black_king_position + 9*j] < 48) || (board[black_king_position + 9*j] > 51)) begin
                         if(((board[black_king_position + 9*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position + 9*j] & 6'b111_100) == 6'b100_100)) begin
-                            bishop_black_check1 = 1;
+                            bishop_black_check[0] = 1'b1;
                         end
                         else begin
-                            bishop_black_block1 = 1;
+                            bishop_black_block[0] = 1'b1;
                         end
                     end
                     else begin
-                        if(((black_king_position + 9*j)%8 == 7) || ((black_king_position + 9*j)/8 == 7)) begin
-                            bishop_black_block1 = 1;
+                        if((black_king_position_x == (7 - j)) || (black_king_position_y == (7 - j))) begin
+                            bishop_black_block[0] = 1'b1;
                         end
                     end
                 end
             end
-            bishop_black_check2 = 0;
-            bishop_black_block2 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_black_check2 == 0) && (bishop_black_block2 == 0)) && (black_king_position <= (63 - 7*j))) begin
+            for (j = 1; j <= 7; j = j + 1) begin // 左下
+                if (((bishop_black_check[1] == 1'b0) && (bishop_black_block[1] == 1'b0)) && ((black_king_position_x >= j) && (black_king_position_y <= (7 - j)))) begin
                     if ((board[black_king_position + 7*j] < 48) || (board[black_king_position + 7*j] > 51)) begin
                         if(((board[black_king_position + 7*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position + 7*j] & 6'b111_100) == 6'b100_100)) begin
-                            bishop_black_check2 = 1;
+                            bishop_black_check[1] = 1'b1;
                         end
                         else begin
-                            bishop_black_block2 = 1;
+                            bishop_black_block[1] = 1'b1;
                         end
                     end
                     else begin
-                        if(((black_king_position + 7*j)%8 == 0) || ((black_king_position + 7*j)/8 == 7)) begin
-                            bishop_black_block2 = 1;
+                        if((black_king_position_x == j) || (black_king_position_y == (7 - j))) begin
+                            bishop_black_block[1] = 1'b1;
                         end
                     end
                 end
             end
-            bishop_black_check3 = 0;
-            bishop_black_block3 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_black_check3 == 0) && (bishop_black_block3 == 0)) && (black_king_position >= 7*j)) begin
+            for (j = 1; j <= 7; j = j + 1) begin // 右上
+                if (((bishop_black_check[2] == 1'b0) && (bishop_black_block[2] == 1'b0)) && ((black_king_position_x <= (7 - j)) && (black_king_position_y >= j))) begin
                     if ((board[black_king_position - 7*j] < 48) || (board[black_king_position - 7*j] > 51)) begin
                         if(((board[black_king_position - 7*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position - 7*j] & 6'b111_100) == 6'b100_100)) begin
-                            bishop_black_check3 = 1;
+                            bishop_black_check[2] = 1'b1;
                         end
                         else begin
-                            bishop_black_block3 = 1;
+                            bishop_black_block[2] = 1'b1;
                         end
                     end
                     else begin
-                        if(((black_king_position - 7*j)%8 == 7) || ((black_king_position - 7*j)/8 == 0)) begin
-                            bishop_black_block3 = 1;
+                        if((black_king_position_x == (7 - j)) || (black_king_position_y == j)) begin
+                            bishop_black_block[2] = 1'b1;
                         end
                     end
                 end
             end
-            bishop_black_check4 = 0;
-            bishop_black_block4 = 0;
-            for (j = 1; j < 7; j = j + 1) begin
-                if (((bishop_black_check4 == 0) && (bishop_black_block4 == 0)) && (black_king_position >= 9*j)) begin
+            for (j = 1; j <= 7; j = j + 1) begin // 左上
+                if (((bishop_black_check[3] == 1'b0) && (bishop_black_block[3] == 1'b0)) && ((black_king_position_x >= j) && (black_king_position_y >= j))) begin
                     if ((board[black_king_position - 9*j] < 48) || (board[black_king_position - 9*j] > 51)) begin
                         if(((board[black_king_position - 9*j] & 6'b111_100) == 6'b010_100) || ((board[black_king_position - 9*j] & 6'b111_100) == 6'b100_100)) begin
-                            bishop_black_check4 = 1;
+                            bishop_black_check[3] = 1'b1;
                         end
                         else begin
-                            bishop_black_block4 = 1;
+                            bishop_black_block[3] = 1'b1;
                         end
                     end
                     else begin
-                        if(((black_king_position - 9*j)%8 == 0) || ((black_king_position - 9*j)/8 == 0)) begin
-                            bishop_black_block4 = 1;
+                        if((black_king_position_x == j) || (black_king_position_y == j)) begin
+                            bishop_black_block[3] = 1'b1;
                         end
                     end
                 end
             end
-            black_checked = (bishop_black_check1 || bishop_black_check2 || bishop_black_check3 || bishop_black_check4);
+            black_checked = (bishop_black_check != 4'b0000)? 1'b1 : 1'b0;
+        end
+        // rook
+        if(black_checked != 1'b1) begin
+            rook_black_check = 4'b0000;
+            rook_black_block = 4'b0000;
+            for (j = 1; j <= 7; j = j + 1) begin // 下
+                if (((rook_black_check[0] == 1'b0) && (rook_black_block[0] == 1'b0)) && (black_king_position_y <= (7 - j))) begin
+                    if ((board[black_king_position + 8*j] < 48) || (board[black_king_position + 8*j] > 51)) begin
+                        if(((board[black_king_position + 8*j] & 6'b111_100) == 6'b011_100) || ((board[black_king_position + 8*j] & 6'b111_100) == 6'b100_100)) begin
+                            rook_black_check[0] = 1'b1;
+                        end
+                        else begin
+                            rook_black_block[0] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(black_king_position_y == (7 - j)) begin
+                            rook_black_block[0] = 1'b1;
+                        end
+                    end
+                end
+            end
+            for (j = 1; j <= 7; j = j + 1) begin // 上
+                if (((rook_black_check[1] == 1'b0) && (rook_black_block[1] == 1'b0)) && (black_king_position_y >= j)) begin
+                    if ((board[black_king_position - 8*j] < 48) || (board[black_king_position - 8*j] > 51)) begin
+                        if(((board[black_king_position - 8*j] & 6'b111_100) == 6'b011_100) || ((board[black_king_position - 8*j] & 6'b111_100) == 6'b100_100)) begin
+                            rook_black_check[1] = 1'b1;
+                        end
+                        else begin
+                            rook_black_block[1] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(black_king_position_y == j) begin
+                            rook_black_block[1] = 1'b1;
+                        end
+                    end
+                end
+            end
+            for (j = 1; j <= 7; j = j + 1) begin // 右
+                if (((rook_black_check[2] == 1'b0) && (rook_black_block[2] == 1'b0)) && (black_king_position_x <= (7 - j))) begin
+                    if ((board[black_king_position + j] < 48) || (board[black_king_position + j] > 51)) begin
+                        if(((board[black_king_position + j] & 6'b111_100) == 6'b011_100) || ((board[black_king_position + j] & 6'b111_100) == 6'b100_100)) begin
+                            rook_black_check[2] = 1'b1;
+                        end
+                        else begin
+                            rook_black_block[2] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(black_king_position_x == (7 - j)) begin
+                            rook_black_block[2] = 1'b1;
+                        end
+                    end
+                end
+            end
+            for (j = 1; j <= 7; j = j + 1) begin // 左
+                if (((rook_black_check[3] == 1'b0) && (rook_black_block[3] == 1'b0)) && (black_king_position_x >= j)) begin
+                    if ((board[black_king_position - j] < 48) || (board[black_king_position - j] > 51)) begin
+                        if(((board[black_king_position - j] & 6'b111_100) == 6'b011_100) || ((board[black_king_position - j] & 6'b111_100) == 6'b100_100)) begin
+                            rook_black_check[3] = 1'b1;
+                        end
+                        else begin
+                            rook_black_block[3] = 1'b1;
+                        end
+                    end
+                    else begin
+                        if(black_king_position_x == j) begin
+                            rook_black_block[3] = 1'b1;
+                        end
+                    end
+                end
+            end
+            black_checked = (rook_black_check != 4'b0000)? 1'b1 : 1'b0;
+        end
+        // king
+        if(black_checked != 1'b1) begin
+            if(black_king_position_y >= 1) begin // 上方
+                if((black_king_position_x >= 1) && ((board[black_king_position - 9] & 6'b111_100) == 6'b101_100)) begin // 左上
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 6) && ((board[black_king_position - 7] & 6'b111_100) == 6'b101_100)) begin // 右上
+                    black_checked = 1'b1;
+                end
+                if((board[black_king_position - 8] & 6'b111_100) == 6'b101_100) begin// 上
+                    black_checked = 1'b1;
+                end
+            end
+            if(black_king_position_y <= 6) begin // 下方
+                if((black_king_position_x >= 1) && ((board[black_king_position + 7] & 6'b111_100) == 6'b101_100)) begin // 左下
+                    black_checked = 1'b1;
+                end
+                if((black_king_position_x <= 6) && ((board[black_king_position + 9] & 6'b111_100) == 6'b101_100)) begin // 右下
+                    black_checked = 1'b1;
+                end
+                if((board[black_king_position + 8] & 6'b111_100) == 6'b101_100) begin// 下
+                    black_checked = 1'b1;
+                end
+            end
+            if((black_king_position_x >= 1) && ((board[black_king_position - 1] & 6'b111_100) == 6'b101_100)) begin // 左
+                black_checked = 1'b1;
+            end
+            if((black_king_position_x <= 6) && ((board[black_king_position + 1] & 6'b111_100) == 6'b101_100)) begin // 右
+                black_checked = 1'b1;
+            end
         end
     end
-
+    // sound effect
+    reg [22:0] music_counter;
+    reg [25:0] promotion_counter;
+    reg [26:0] check_counter;
+    reg [25:0] win_counter;
+    reg [7:0] win_tag;
+    reg [1:0] period;
+    reg [31:0] bell [0:215] = {
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`g3, 2*`g3, 2*`g3, `silence,
+        2*`c3, 2*`c3, 2*`c3, `silence,
+        2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`d3, 2*`d3, 2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`g3, 2*`g3, 2*`g3, 2*`g3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`g3, 2*`g3, 2*`g3, `silence,
+        2*`c3, 2*`c3, 2*`c3, `silence,
+        2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`e3, 2*`e3, 2*`e3, 2*`e3, 2*`e3, `silence,
+        2*`g3, 2*`g3, 2*`g3, `silence,
+        2*`g3, 2*`g3, 2*`g3, `silence,
+        2*`f3, 2*`f3, 2*`f3, `silence,
+        2*`d3, 2*`d3, 2*`d3, `silence,
+        2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, 2*`c3, `silence
+    };
+    always @(posedge clk) begin
+        if ((state == GAME) && (is_chess_move)) begin
+            freqL <= 2 * `c3;
+            freqR <= 2 * `c3;
+            music_counter <= 1'b0;
+        end
+        else if ((state == PROMOTION) && (promotion_check == 1)) begin 
+            promotion_counter <= promotion_counter + 1'b1;
+            if (promotion_counter[25] == 1) begin
+                promotion_counter <= 0;
+                if (freqL == `silence) begin
+                    freqL <= 2 * `c3;
+                    freqR <= 2 * `c3;
+                end
+                else if (freqL == 2 * `c3) begin
+                    freqL <= 2 * `d3;
+                    freqR <= 2 * `d3;
+                end
+                else if (freqL == 2 * `d3) begin
+                    freqL <= 2 * `e3;
+                    freqR <= 2 * `e3;
+                end
+                else if (freqL == 2 * `e3) begin
+                    freqL <= 2 * `f3;
+                    freqR <= 2 * `f3;
+                end
+                else if (freqL == 2 * `f3) begin
+                    freqL <= 2 * `g3;
+                    freqR <= 2 * `g3;
+                end
+                else if (freqL == 2 * `g3) begin
+                    freqL <= 2 * `c3;
+                    freqR <= 2 * `c3;
+                end
+                else begin
+                    freqL <= 2 * `c3;
+                    freqR <= 2 * `c3;
+                end
+            end
+        end
+        else if ((state == GAME) && (black_checked || white_checked)) begin
+            check_counter <= check_counter + 1'b1;
+            if (check_counter[26] == 1) begin
+                freqL <= `d3;
+                freqR <= `d3;
+            end
+            else begin
+                freqL <= 2 * `c3;
+                freqR <= 2 * `c3;
+            end
+        end
+        else if (win != 2'b00) begin
+            win_counter <= win_counter + 1'b1;
+            if (win_counter[23] == 1) begin
+                win_counter <= 0;
+                win_tag <= win_tag + 1;
+                if (win_tag == 215)
+                     win_tag <= 0;
+            end
+            freqL <= bell[win_tag];
+            freqR <= bell[win_tag];
+        end
+        else begin
+            promotion_counter <= 0;
+            check_counter <= 0;
+            music_counter <= music_counter + 1'b1;
+            win_counter <= 0;
+            win_tag <= 0;
+            period <= 0;
+            if (music_counter[22] == 1) begin
+                freqL <= `silence;
+                freqR <= `silence;
+            end
+        end
+    end
 endmodule
