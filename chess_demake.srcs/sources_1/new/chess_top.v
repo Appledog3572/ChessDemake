@@ -395,7 +395,7 @@ module chess_top_master(
                 end
                 else if(!is_move && chess_move_cnt == 1) begin
                     if (((board[cursor] & 6'b111000) == 6'b000000) && ((cursor / 8 == 0) || (cursor / 8 == 7))) begin
-                        promotion_check <= 1;
+                        promotion_check <= 1; 
                     end
                     if((board[hold_position] & 6'b000_010) == 6'b000_000) begin //green tile
                         board[hold_position] = 6'b110_000;
