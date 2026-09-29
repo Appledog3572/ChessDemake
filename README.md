@@ -20,7 +20,7 @@
 - **雙板連線**：master 板透過 7 條單向訊號將回合、暫停、重置、將軍、勝負等狀態傳給 slave 板，供另一位玩家顯示
 
 ## 技術重點：棋盤狀態編碼
-![./images/sprite_encoding.jpg](./images/sprite_encoding.jpg)
+![棋盤狀態編碼示意圖](./images/sprite_encoding.jpg)
 
 棋盤以 64 個 entry 的陣列儲存，每格僅用 **6 bits** 表示。這 6 個 bit 同時承擔兩件事：
 
@@ -50,8 +50,11 @@
 問題在於大部分測試情境都不會觸發，直到所有功能完成後才出現難以重現的異常，因此耗費了整個專案最多的除錯時間。最終將所有判斷改為先分離 x、y 兩個維度、確認各自在範圍內後才做位移，才徹底解決。
 
 ## Demo
-![](./images/developing.jpg)  
-開發與實機畫面  
 
-![](./images/led_win.jpg)  
-七段顯示器與LED展示
+![VGA 輸出的西洋棋棋盤畫面](./images/developing.jpg)
+
+*實機測試：棋盤與棋子由 FPGA 經 VGA 輸出至螢幕*
+
+![Basys 3 七段顯示器顯示 WIN](./images/led_win.jpg)
+
+*遊戲結束：勝方板上七段顯示器顯示 WIN，LED 交錯閃爍*
