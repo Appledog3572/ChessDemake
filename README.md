@@ -20,7 +20,7 @@
 - **雙板連線**：master 板透過 7 條單向訊號將回合、暫停、重置、將軍、勝負等狀態傳給 slave 板，供另一位玩家顯示
 
 ## 技術重點：棋盤狀態編碼
-![./images/chess_asset.jpg](./image/chess_asset.jpg)
+![./images/chess_asset.jpg](./images/chess_asset.jpg)
 
 棋盤以 64 個 entry 的陣列儲存，每格僅用 **6 bits** 表示。這 6 個 bit 同時承擔兩件事：
 
